@@ -1,9 +1,9 @@
 package connection;
 
 public interface Event {
-    public abstract void onReceiveText(String text);
+    public void onReceiveText(String text);
 
-    public abstract void OnReceiveFile();
+    public void OnReceiveFile();
 
 //    public abstract void onReceiveCommand();
 

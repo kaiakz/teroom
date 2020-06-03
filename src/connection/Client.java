@@ -31,8 +31,8 @@ public class Client {
         this.event = event;
 
         try {
-            dataOutputStream = new DataOutputStream(connection.getOutputStream());
-            dataInputStream = new DataInputStream(connection.getInputStream());
+            dataOutputStream = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()));
+            dataInputStream = new DataInputStream(new BufferedInputStream(connection.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,7 +75,27 @@ public class Client {
         dataOutputStream.flush();
     }
 
+    public void sendFile(String fname) throws Exception {
+        dataOutputStream.writeUTF("MSG:FILE");
+        dataOutputStream.flush();
 
+        File f = new File(fname);
+
+        dataOutputStream.writeUTF(f.getName());
+        dataOutputStream.flush();
+
+        dataOutputStream.writeLong(f.length());
+        dataOutputStream.flush();
+        
+        BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(f));
+        long len = 0;
+        byte[] buf = new byte[2048];
+        while ((len = fos.read(buf)) >= 0) {
+            dataOutputStream.write(buf, 0, len);
+            // dataOutputStream.flush();
+        }
+        fos.close();
+    }
 
     class Receiver implements Runnable {
         @Override
