@@ -75,7 +75,16 @@ public class Client {
         dataOutputStream.flush();
     }
 
-    public void sendFile(String fname) throws Exception {
+    public void Login(String name, String id) throws IOException {
+        dataOutputStream.writeUTF("MSG:LOGIN");
+        dataOutputStream.flush();
+        dataOutputStream.writeUTF(name);
+        dataOutputStream.flush();
+        dataOutputStream.writeUTF(id);
+        dataOutputStream.flush();
+    }
+
+    public void sendFile(String fname) throws IOException {
         dataOutputStream.writeUTF("MSG:FILE");
         dataOutputStream.flush();
 
@@ -87,12 +96,12 @@ public class Client {
         dataOutputStream.writeLong(f.length());
         dataOutputStream.flush();
         
-        BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(f));
-        long len = 0;
-        byte[] buf = new byte[2048];
+        FileInputStream fos = new FileInputStream(f);
+        int len = 0;
+        byte[] buf = new byte[4096];
         while ((len = fos.read(buf)) >= 0) {
             dataOutputStream.write(buf, 0, len);
-            // dataOutputStream.flush();
+            dataOutputStream.flush();
         }
         fos.close();
     }
@@ -108,7 +117,12 @@ public class Client {
                         String text = dataInputStream.readUTF();
                         event.onReceiveText(text);
                     } else if (msg.equals("MSG:FILE")) {
-
+                        String fname = getFile();
+                        event.onReceiveFile(fname);
+                    } else if (msg.equals("MSG:LOGIN")) {
+                        String name = dataInputStream.readUTF();
+                        String id = dataInputStream.readUTF();
+                        event.onLogin(name, id);
                     }
                 }
             } catch (Exception e) {
@@ -116,6 +130,23 @@ public class Client {
             }
         }
 
+        String getFile() throws IOException {
+            String fname = dataInputStream.readUTF();
+            long flen = dataInputStream.readLong();
+
+            FileOutputStream fos = new FileOutputStream(new File("e-" + fname));
+
+            int dlen = 0;
+            byte[] buf = new byte[4096];
+            while (dlen < flen) {
+                int len = dataInputStream.read(buf, 0, buf.length);
+                fos.write(buf, 0, len);
+                fos.flush();
+                dlen += len;
+            }
+            fos.close();
+            return fname;
+        }
     }
 
     public static void main(String[] args) {
@@ -126,13 +157,20 @@ public class Client {
             }
 
             @Override
-            public void OnReceiveFile() {
+            public void onReceiveFile(String filename) {
+
+            }
+
+            @Override
+            public void onLogin(String name, String id) {
 
             }
         });
 
         try {
             c.sendText("Hello");
+            c.sendFile("D:\\VSCodeUserSetup-x64-1.40.1.exe");
+
         } catch (IOException e) {
             e.printStackTrace();
         }

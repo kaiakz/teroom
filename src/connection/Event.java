@@ -3,11 +3,11 @@ package connection;
 public interface Event {
     public void onReceiveText(String text);
 
-    public void OnReceiveFile();
+    public void onReceiveFile(String filename);
 
-//    public abstract void onReceiveCommand();
+//    public void onReceiveCommand();
 
-//    public abstract void onReceivedLogin();
+    public void onLogin(String name, String id);
 
-//    public abstract void onReceiveVideo();
+//    public void onReceiveVideo();
 }

@@ -67,8 +67,13 @@ public class Server {
             }
 
             @Override
-            public void OnReceiveFile() {
+            public void onReceiveFile(String filename) {
+                System.out.println("Received: "+ filename);
+            }
 
+            @Override
+            public void onLogin(String name, String id) {
+                System.out.println("Login:"+name+id);
             }
         });
     }
