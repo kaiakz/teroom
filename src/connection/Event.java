@@ -1,6 +1,6 @@
 package connection;
 
-public abstract class Event {
+public interface Event {
     public abstract void onReceiveText(String text);
 
     public abstract void OnReceiveFile();

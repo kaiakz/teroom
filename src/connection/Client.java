@@ -1,5 +1,6 @@
 package connection;
 
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -9,14 +10,32 @@ public class Client {
     private Socket connection;
     private Event event;
 
+    DataOutputStream dataOutputStream;
+    DataInputStream dataInputStream;
+
     public Client(Event event) {
+        this.event = event;
         ConnectServer();
 
+        try {
+            dataOutputStream = new DataOutputStream(connection.getOutputStream());
+            dataInputStream = new DataInputStream(connection.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new Thread(new Receiver()).start();
     }
 
     public Client(Socket socket, Event event) {
-        connection = socket;
+        this.connection = socket;
+        this.event = event;
+
+        try {
+            dataOutputStream = new DataOutputStream(connection.getOutputStream());
+            dataInputStream = new DataInputStream(connection.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         new Thread(new Receiver()).start();
     }
@@ -49,20 +68,53 @@ public class Client {
         }
     }
 
-    //
+    public void sendText(String text) throws IOException {
+        dataOutputStream.writeUTF("MSG:TEXT");
+        dataOutputStream.flush();
+        dataOutputStream.writeUTF(text);
+        dataOutputStream.flush();
+    }
+
+
 
     class Receiver implements Runnable {
-
         @Override
         public void run() {
             try {
                 String msg;
-//                while ((msg=reader.readLine()) != null) {
-//                    event.onReceiveText();
-//                }
+                while (true) {
+                    msg=dataInputStream.readUTF();
+                    if (msg.equals("MSG:TEXT")) {
+                        String text = dataInputStream.readUTF();
+                        event.onReceiveText(text);
+                    } else if (msg.equals("MSG:FILE")) {
+
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+    }
+
+    public static void main(String[] args) {
+        Client c = new Client(new Event() {
+            @Override
+            public void onReceiveText(String text) {
+                System.out.println(text);
+            }
+
+            @Override
+            public void OnReceiveFile() {
+
+            }
+        });
+
+        try {
+            c.sendText("Hello");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }

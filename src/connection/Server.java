@@ -9,7 +9,7 @@ public class Server {
 //    Event sevent;   // Server Event
 
     public Server(Event cevent) {
-        cevent = cevent;
+        this.cevent = cevent;
 
         clients = new ArrayList<>();
         new Thread(new Listener()).start();
@@ -49,7 +49,7 @@ public class Server {
 
                 while (true) {
                     ms.send(outPacket);
-                    System.out.println("Broadcasting");
+//                    System.out.println("Broadcasting");
                     Thread.sleep(delay);
                 }
 
@@ -57,5 +57,19 @@ public class Server {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new Server(new Event() {
+            @Override
+            public void onReceiveText(String text) {
+                System.out.println(text);
+            }
+
+            @Override
+            public void OnReceiveFile() {
+
+            }
+        });
     }
 }
