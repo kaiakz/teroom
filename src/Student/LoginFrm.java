@@ -3,11 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package StudentSide;
-
-import connection.Client;
-
-import java.io.IOException;
+package Student;
 
 /**
  *
@@ -18,9 +14,17 @@ public class LoginFrm extends javax.swing.JFrame {
     /**
      * Creates new form StuSignInFrm
      */
+    private static Student parent;
+
     public LoginFrm() {
         initComponents();
-        setTitle("学生登录");
+        setTitle("学生签到");
+    }
+
+    public LoginFrm(Student parent) {
+        initComponents();
+        setTitle("学生签到");
+        this.parent = parent;
     }
 
     /**
@@ -113,6 +117,10 @@ public class LoginFrm extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String name=jTextField1.getText();
         String id=new String(jPasswordField1.getPassword());
+//        parent.c.Login(name, id);
+        this.parent.setStudent(name, id);
+        this.dispose();
+        this.parent.setVisible(true);
         //传姓名和学号给服务器端
     }//GEN-LAST:event_jButton1ActionPerformed
 

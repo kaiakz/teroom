@@ -74,7 +74,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField1">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField1ActionPerformed"/>
+        <EventHandler clientEvent="actionPerformed" listener="java.awt.clientEvent.ActionListener" parameters="java.awt.clientEvent.ActionEvent" handler="jTextField1ActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -84,7 +84,7 @@
     </Component>
     <Component class="javax.swing.JPasswordField" name="jPasswordField1">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jPasswordField1ActionPerformed"/>
+        <EventHandler clientEvent="actionPerformed" listener="java.awt.clientEvent.ActionListener" parameters="java.awt.clientEvent.ActionEvent" handler="jPasswordField1ActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
@@ -92,7 +92,7 @@
         <Property name="text" type="java.lang.String" value="&#x767b;&#x5f55;"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler clientEvent="actionPerformed" listener="java.awt.clientEvent.ActionListener" parameters="java.awt.clientEvent.ActionEvent" handler="jButton1ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

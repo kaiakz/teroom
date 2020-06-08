@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package StudentSide;
+package Student;
 
 import connection.Client;
-import connection.Event;
+import connection.ClientEvent;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.Date;
 
@@ -16,32 +15,38 @@ import java.util.Date;
  *
  * @author 123
  */
-public class ChatFrm extends javax.swing.JFrame {
-    Client c;
+public class Student extends javax.swing.JFrame {
+    private Client c;
+    private String id;
+    private String name;
     /**
-     * Creates new form ChatFrm
+     * Creates new form Test
      */
-    public ChatFrm() {
+    public Student() {
         initComponents();
-        setTitle("聊天窗口");
-        c=new Client(new Event() {
+        setTitle("聊天室");
+        c = new Client(new ClientEvent() {
             @Override
-            public void onReceiveText(String text) {
+            public void onReceiveText(String sender, String text) {
                 Date time=new Date();
-                jTextArea1.append(text+"\t"+time.toString());
-                jTextArea1.setCaretPosition(jTextArea1.getText().length());
+                jTextArea1.append(sender+"    "+time.toString()+"：\n");
+                jTextArea1.append(text);
             }
 
             @Override
-            public void onReceiveFile(String filename) {
-
-            }
-
-            @Override
-            public void onLogin(String name, String id) {
+            public void onReceiveFile(String sender, String filename) {
 
             }
         });
+
+        new LoginFrm(this).setVisible(true);
+
+    }
+
+    public void setStudent(String name, String id) {
+        this.name = name;
+        this.id = id;
+        jTextArea1.append(name + "上线了");
     }
 
     /**
@@ -80,25 +85,25 @@ public class ChatFrm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                         .addComponent(jScrollPane2)))
-                .addGap(35, 35, 35))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -109,7 +114,7 @@ public class ChatFrm extends javax.swing.JFrame {
             Date time=new Date();
             String s=jTextArea2.getText();
             c.sendText(s);
-            jTextArea1.append("学生端"+"    "+time.toString()+"：\n");
+            jTextArea1.append("测试端"+"    "+time.toString()+"：\n");
             jTextArea1.append(s);
             jTextArea1.setCaretPosition(jTextArea1.getText().length());
             jTextArea2.setText("");
@@ -136,20 +141,20 @@ public class ChatFrm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChatFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Student.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChatFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Student.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChatFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Student.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChatFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Student.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ChatFrm().setVisible(true);
+                new Student();
             }
         });
     }
