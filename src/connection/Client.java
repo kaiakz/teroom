@@ -8,40 +8,25 @@ import java.net.Socket;
 
 public class Client {
     private Socket connection;
-    private Event event;
+    private ClientEvent clientEvent;
 
-    DataOutputStream dataOutputStream;
-    DataInputStream dataInputStream;
+    private DataOutputStream dataOutputStream;
+    private DataInputStream dataInputStream;
 
-    public Client(Event event) {
-        this.event = event;
-        ConnectServer();
+    public Client(ClientEvent clientEvent) {
+        this.clientEvent = clientEvent;
 
         try {
-            dataOutputStream = new DataOutputStream(connection.getOutputStream());
-            dataInputStream = new DataInputStream(connection.getInputStream());
+            ConnectServer();
+            initDataStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
         new Thread(new Receiver()).start();
     }
 
-    public Client(Socket socket, Event event) {
-        this.connection = socket;
-        this.event = event;
+    private void ConnectServer() throws IOException{
 
-        try {
-            dataOutputStream = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()));
-            dataInputStream = new DataInputStream(new BufferedInputStream(connection.getInputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        new Thread(new Receiver()).start();
-    }
-
-    private void ConnectServer() {
-        try {
             MulticastSocket ms = new MulticastSocket(8924);
             InetAddress recvAddr = InetAddress.getByName("230.0.0.1");
             ms.joinGroup(recvAddr);
@@ -62,10 +47,11 @@ public class Client {
             connection = new Socket(inPacket.getAddress(), 8924);
 //            reader = new BufferedReader(new InputStreamReader(server.getInputStream(), "UTF-8"));
 //            writer = new BufferedWriter(new OutputStreamWriter(server.getOutputStream()));
+    }
 
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    private void initDataStream() throws IOException{
+        dataOutputStream = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()));
+        dataInputStream = new DataInputStream(new BufferedInputStream(connection.getInputStream()));
     }
 
     public void sendText(String text) throws IOException {
@@ -75,20 +61,11 @@ public class Client {
         dataOutputStream.flush();
     }
 
-    public void Login(String name, String id) throws IOException {
-        dataOutputStream.writeUTF("MSG:LOGIN");
-        dataOutputStream.flush();
-        dataOutputStream.writeUTF(name);
-        dataOutputStream.flush();
-        dataOutputStream.writeUTF(id);
-        dataOutputStream.flush();
-    }
-
-    public void sendFile(String fname) throws IOException {
+    public void sendFile(String filepath) throws IOException {
         dataOutputStream.writeUTF("MSG:FILE");
         dataOutputStream.flush();
 
-        File f = new File(fname);
+        File f = new File(filepath);
 
         dataOutputStream.writeUTF(f.getName());
         dataOutputStream.flush();
@@ -106,6 +83,15 @@ public class Client {
         fos.close();
     }
 
+    public void Login(String name, String id) throws IOException {
+        dataOutputStream.writeUTF("MSG:HELLO");
+        dataOutputStream.flush();
+        dataOutputStream.writeUTF(name);
+        dataOutputStream.flush();
+        dataOutputStream.writeUTF(id);
+        dataOutputStream.flush();
+    }
+
     class Receiver implements Runnable {
         @Override
         public void run() {
@@ -114,15 +100,13 @@ public class Client {
                 while (true) {
                     msg=dataInputStream.readUTF();
                     if (msg.equals("MSG:TEXT")) {
+                        String sender = dataInputStream.readUTF();
                         String text = dataInputStream.readUTF();
-                        event.onReceiveText(text);
+                        clientEvent.onReceiveText(sender, text);
                     } else if (msg.equals("MSG:FILE")) {
                         String fname = getFile();
-                        event.onReceiveFile(fname);
-                    } else if (msg.equals("MSG:LOGIN")) {
-                        String name = dataInputStream.readUTF();
-                        String id = dataInputStream.readUTF();
-                        event.onLogin(name, id);
+                        String sender = dataInputStream.readUTF();
+                        clientEvent.onReceiveFile(sender, fname);
                     }
                 }
             } catch (Exception e) {
@@ -150,26 +134,21 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        Client c = new Client(new Event() {
+        Client c = new Client(new ClientEvent() {
             @Override
-            public void onReceiveText(String text) {
+            public void onReceiveText(String sender, String text) {
                 System.out.println(text);
             }
 
             @Override
-            public void onReceiveFile(String filename) {
-
-            }
-
-            @Override
-            public void onLogin(String name, String id) {
+            public void onReceiveFile(String sender, String filename) {
 
             }
         });
 
         try {
             c.sendText("Hello");
-            c.sendFile("D:\\VSCodeUserSetup-x64-1.40.1.exe");
+            c.sendFile("/run/media/kai/Dev/Telegram/Telegram");
 
         } catch (IOException e) {
             e.printStackTrace();

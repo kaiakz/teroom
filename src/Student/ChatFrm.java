@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package StudentSide;
+package Student;
 
 import connection.Client;
-import connection.Event;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.Date;
 
@@ -17,31 +15,31 @@ import java.util.Date;
  * @author 123
  */
 public class ChatFrm extends javax.swing.JFrame {
-    Client c;
+    public Client c;
     /**
      * Creates new form ChatFrm
      */
     public ChatFrm() {
         initComponents();
         setTitle("聊天窗口");
-        c=new Client(new Event() {
-            @Override
-            public void onReceiveText(String text) {
-                Date time=new Date();
-                jTextArea1.append(text+"\t"+time.toString());
-                jTextArea1.setCaretPosition(jTextArea1.getText().length());
-            }
-
-            @Override
-            public void onReceiveFile(String filename) {
-
-            }
-
-            @Override
-            public void onLogin(String name, String id) {
-
-            }
-        });
+//        c=new Client(new ClientEvent() {
+//            @Override
+//            public void onReceiveText(String text) {
+//                Date time=new Date();
+//                jTextArea1.append(text+"\t"+time.toString());
+//                jTextArea1.setCaretPosition(jTextArea1.getText().length());
+//            }
+//
+//            @Override
+//            public void onReceiveFile(String filename) {
+//
+//            }
+//
+//            @Override
+//            public void onLogin(String name, String id) {
+//
+//            }
+//        });
     }
 
     /**

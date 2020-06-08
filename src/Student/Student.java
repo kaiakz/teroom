@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package StudentSide;
+package Student;
 
 import connection.Client;
-import connection.Event;
+import connection.ClientEvent;
 
 import java.io.IOException;
 import java.util.Date;
@@ -15,32 +15,38 @@ import java.util.Date;
  *
  * @author 123
  */
-public class Test extends javax.swing.JFrame {
-    Client c;
+public class Student extends javax.swing.JFrame {
+    private Client c;
+    private String id;
+    private String name;
     /**
      * Creates new form Test
      */
-    public Test() {
+    public Student() {
         initComponents();
-        setTitle("测试端");
-        c=new Client(new Event() {
+        setTitle("聊天室");
+        c = new Client(new ClientEvent() {
             @Override
-            public void onReceiveText(String text) {
+            public void onReceiveText(String sender, String text) {
                 Date time=new Date();
-                jTextArea1.append(text+"\t"+time.toString());
-                jTextArea1.setCaretPosition(jTextArea1.getText().length());
+                jTextArea1.append(sender+"    "+time.toString()+"：\n");
+                jTextArea1.append(text);
             }
 
             @Override
-            public void onReceiveFile(String filename) {
-
-            }
-
-            @Override
-            public void onLogin(String name, String id) {
+            public void onReceiveFile(String sender, String filename) {
 
             }
         });
+
+        new LoginFrm(this).setVisible(true);
+
+    }
+
+    public void setStudent(String name, String id) {
+        this.name = name;
+        this.id = id;
+        jTextArea1.append(name + "上线了");
     }
 
     /**
@@ -135,20 +141,20 @@ public class Test extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Student.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Student.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Student.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Student.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Test().setVisible(true);
+                new Student();
             }
         });
     }

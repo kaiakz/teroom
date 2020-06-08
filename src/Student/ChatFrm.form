@@ -86,7 +86,7 @@
         <Property name="text" type="java.lang.String" value="&#x53d1;&#x9001;"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler clientEvent="actionPerformed" listener="java.awt.clientEvent.ActionListener" parameters="java.awt.clientEvent.ActionEvent" handler="jButton1ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
