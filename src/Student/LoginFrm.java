@@ -14,7 +14,7 @@ public class LoginFrm extends javax.swing.JFrame {
     /**
      * Creates new form StuSignInFrm
      */
-    private static Student parent;
+    private Student parent;
 
     public LoginFrm() {
         initComponents();
@@ -119,6 +119,11 @@ public class LoginFrm extends javax.swing.JFrame {
         String id=new String(jPasswordField1.getPassword());
 //        parent.c.Login(name, id);
         this.parent.setStudent(name, id);
+        try {
+            this.parent.c.Login(name, id);
+        } catch (Exception e) {
+
+        }
         this.dispose();
         this.parent.setVisible(true);
         //传姓名和学号给服务器端

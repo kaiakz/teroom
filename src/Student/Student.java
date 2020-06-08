@@ -16,7 +16,7 @@ import java.util.Date;
  * @author 123
  */
 public class Student extends javax.swing.JFrame {
-    private Client c;
+    public Client c;
     private String id;
     private String name;
     /**
