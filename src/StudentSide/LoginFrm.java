@@ -14,9 +14,9 @@ import java.io.IOException;
  * @author 123
  */
 public class LoginFrm extends javax.swing.JFrame {
-
+    Client c;
     /**
-     * Creates new form StuSignInFrm
+     * Creates new form LoginFrm
      */
     public LoginFrm() {
         initComponents();
