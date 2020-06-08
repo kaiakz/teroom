@@ -6,7 +6,7 @@
 package StudentSide;
 
 import connection.Client;
-import connection.Event;
+import connection.ClientEvent;
 
 import java.io.IOException;
 import java.util.Date;
@@ -23,24 +23,24 @@ public class Test extends javax.swing.JFrame {
     public Test() {
         initComponents();
         setTitle("测试端");
-        c=new Client(new Event() {
-            @Override
-            public void onReceiveText(String text) {
-                Date time=new Date();
-                jTextArea1.append(text+"\t"+time.toString());
-                jTextArea1.setCaretPosition(jTextArea1.getText().length());
-            }
-
-            @Override
-            public void onReceiveFile(String filename) {
-
-            }
-
-            @Override
-            public void onLogin(String name, String id) {
-
-            }
-        });
+//        c=new Client(new ClientEvent() {
+//            @Override
+//            public void onReceiveText(String text) {
+//                Date time=new Date();
+//                jTextArea1.append(text+"\t"+time.toString());
+//                jTextArea1.setCaretPosition(jTextArea1.getText().length());
+//            }
+//
+//            @Override
+//            public void onReceiveFile(String filename) {
+//
+//            }
+//
+//            @Override
+//            public void onLogin(String name, String id) {
+//
+//            }
+//        });
     }
 
     /**
