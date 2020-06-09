@@ -160,6 +160,7 @@ public class Server {
                             String text = dataInputStream.readUTF();
                             serverEvent.onReceiveText(text);
                             RelayText(getID(), name, text);
+//                            clients.get(ID).sendText(name, text);
                         } else if (msg.equals("MSG:FILE")) {
                             String fname = getFile();
                             serverEvent.onReceiveFile(fname);

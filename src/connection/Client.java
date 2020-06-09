@@ -84,7 +84,7 @@ public class Client {
     }
 
     public void Login(String name, String id) throws IOException {
-        dataOutputStream.writeUTF("MSG:HELLO");
+        dataOutputStream.writeUTF("MSG:LOGIN");
         dataOutputStream.flush();
         dataOutputStream.writeUTF(name);
         dataOutputStream.flush();
@@ -137,7 +137,7 @@ public class Client {
         Client c = new Client(new ClientEvent() {
             @Override
             public void onReceiveText(String sender, String text) {
-                System.out.println(text);
+                System.out.println(sender + " Says " + text);
             }
 
             @Override
@@ -147,8 +147,9 @@ public class Client {
         });
 
         try {
+            c.Login("王小明", "11111");
             c.sendText("Hello");
-            c.sendFile("/run/media/kai/Dev/Telegram/Telegram");
+//            c.sendFile("/run/media/kai/Dev/Telegram/Telegram");
 
         } catch (IOException e) {
             e.printStackTrace();

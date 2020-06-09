@@ -14,7 +14,7 @@ public class LoginFrm extends javax.swing.JFrame {
     /**
      * Creates new form LoginFrm
      */
-    private static Student parent;
+    private Student parent;
 
     public LoginFrm() {
         initComponents();
@@ -107,6 +107,11 @@ public class LoginFrm extends javax.swing.JFrame {
         String id=jTextField2.getText();
 //        parent.c.Login(name, id);
         this.parent.setStudent(name, id);
+        try {
+            this.parent.c.Login(name, id);
+        } catch (Exception e) {
+
+        }
         this.dispose();
         this.parent.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
