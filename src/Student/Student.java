@@ -29,8 +29,8 @@ public class Student extends javax.swing.JFrame {
             @Override
             public void onReceiveText(String sender, String text) {
                 Date time=new Date();
-                jTextArea1.append(sender+"    "+time.toString()+"：\n");
-                jTextArea1.append(text);
+                jTextArea1.append(sender+" 说：\n");
+                jTextArea1.append(text+"\n\n");
             }
 
             @Override
@@ -46,7 +46,7 @@ public class Student extends javax.swing.JFrame {
     public void setStudent(String name, String id) {
         this.name = name;
         this.id = id;
-        jTextArea1.append(name + "上线了");
+        jTextArea1.append("*****"+name+"上线了*****\n");
     }
 
     /**
@@ -111,11 +111,11 @@ public class Student extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{
-            Date time=new Date();
+            //Date time=new Date();
             String s=jTextArea2.getText();
             c.sendText(s);
-            jTextArea1.append("测试端"+"    "+time.toString()+"：\n");
-            jTextArea1.append(s);
+            jTextArea1.append(name+" 说：\n");
+            jTextArea1.append(s+"\n\n");
             jTextArea1.setCaretPosition(jTextArea1.getText().length());
             jTextArea2.setText("");
         } catch (IOException e) {
