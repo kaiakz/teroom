@@ -148,7 +148,7 @@ public class Client {
 
         try {
             c.sendText("Hello");
-            c.sendFile("/run/media/kai/Dev/Telegram/Telegram");
+//            c.sendFile("/run/media/kai/Dev/Telegram/Telegram");
 
         } catch (IOException e) {
             e.printStackTrace();
