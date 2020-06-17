@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 
-package JFrame;
+package Teacher;
+import sqlserver.Sqlserver;
+
 import java.io.*;
 import java.util.*;
 import java.net.*;
@@ -149,33 +151,29 @@ public class Teachsignin extends javax.swing.JFrame {
         ButtonModel model2 = jRadioButton2.getModel();
         String id = jTextField1.getText();
         String password = jTextField2.getText();//获得账号和密码
-        /*
-        Sqlserver sql = new Sqlserver();//连接数据库
-        boolean confirm = sql.teacherSign(id,password);
-        */
+        Sqlserver sql = new Sqlserver();
+        boolean flag = sql.teacherSign(id,password);
+        System.out.println(flag);
         if (this.buttonGroup1.isSelected(model1)){//选了教师
             /*
             if(confirm){
             */
+            if(flag) {
                 new Teachchat(id).setVisible(true);//弹出教师功能界面
                 this.dispose();
-            /*
             }
-            else//账号或密码不正确
-                JOptionPane.showMessageDialog(null, "请输入正确的账号密码", "登陆失败",JOptionPane.ERROR_MESSAGE);
-            */
+            else {
+                JOptionPane.showMessageDialog(null, "请输入正确的账号密码", "登陆失败", JOptionPane.ERROR_MESSAGE);
+            }
         }
         else if(this.buttonGroup1.isSelected(model2)){//选了管理员
-            /*
-            if(confirm){
-            */
+            if(flag) {
                 new Administrator().setVisible(true);
                 this.dispose();
-            /*
             }
-            else//账号或密码不正确
-                JOptionPane.showMessageDialog(null, "请输入正确的账号密码", "登陆失败",JOptionPane.ERROR_MESSAGE);
-            */
+            else {
+                JOptionPane.showMessageDialog(null, "请输入正确的账号密码", "登陆失败", JOptionPane.ERROR_MESSAGE);
+            }
         }
         else//没有选择账户类型
             JOptionPane.showMessageDialog(null, "请选择账号类型", "登录失败",JOptionPane.ERROR_MESSAGE);

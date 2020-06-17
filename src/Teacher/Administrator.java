@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 
-package JFrame;
+package Teacher;
+
+import sqlserver.Sqlserver;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +15,8 @@ import java.util.Vector;
 import javax.swing.ButtonModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+
 //import sqlserver.*;
 
 /**
@@ -20,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
  * @author LinBun
  */
 public class Administrator extends javax.swing.JFrame {
+    //Sqlserver sql;
 
     /**
      * Creates new form Administrator
@@ -28,28 +33,25 @@ public class Administrator extends javax.swing.JFrame {
         initComponents();
         this.setTitle("账号管理");//设定标题
         this.setLocationRelativeTo(null);
+        //this.sql = new Sqlserver();
         this.initTable();//表格初始化
     }
     public void initTable(){ 
+        //初始化
         DefaultTableModel dtm=(DefaultTableModel)jTable1.getModel();
-          try {
-            /*连接数据库并取出账号数据
-            Sqlserver sql = new Sqlserver();//连接数据库
-            String sql="select * from Users";
-            ResultSet rs=sta.executeQuery(sql);
-            while(rs.next()){
+        try {
+            Sqlserver sql = new Sqlserver();
+            Vector<sqlserver.mess> v1 = sql.getUser();
+            for(int i = 0; i < v1.size(); i++){
                 Vector v=new Vector();
-                v.add(rs.getString(1));
-                v.add(rs.getString(2));
-                v.add(rs.getString(3));
+                v.add(v1.elementAt(i).getT1());
+                v.add(v1.elementAt(i).getT2());
+                v.add(v1.elementAt(i).getT3());
+                v.add(v1.elementAt(i).getT4());
                 dtm.addRow(v);
-                } 
-            rs.close();
-            sta.close();
-            dbc.closeCon();
-           */
-          } catch (Exception ex) {
-          }
+            }
+        } catch (Exception ex) {
+        }
     }
 
     /**
@@ -74,7 +76,6 @@ public class Administrator extends javax.swing.JFrame {
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
 
@@ -88,6 +89,11 @@ public class Administrator extends javax.swing.JFrame {
                 "账号", "姓名", "密码", "用户类型"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setFont(new java.awt.Font("黑体", 0, 18)); // NOI18N
@@ -118,6 +124,12 @@ public class Administrator extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("黑体", 0, 18)); // NOI18N
         jLabel1.setText("账号：");
 
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
         jLabel2.setFont(new java.awt.Font("黑体", 0, 18)); // NOI18N
         jLabel2.setText("密码：");
 
@@ -137,14 +149,6 @@ public class Administrator extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("黑体", 0, 18)); // NOI18N
         jLabel3.setText("用户类型：");
 
-        jButton4.setFont(new java.awt.Font("黑体", 0, 18)); // NOI18N
-        jButton4.setText("保存");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
         jLabel4.setFont(new java.awt.Font("黑体", 0, 18)); // NOI18N
         jLabel4.setText("姓名：");
         jLabel4.setToolTipText("");
@@ -157,24 +161,20 @@ public class Administrator extends javax.swing.JFrame {
                 .addGap(61, 61, 61)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(310, 310, 310)))
-                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addGap(26, 26, 26)
                         .addComponent(jRadioButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jRadioButton2)))
-                .addGap(64, 64, 64))
+                .addContainerGap(79, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(73, 73, 73)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -183,15 +183,17 @@ public class Administrator extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(85, 85, 85)
+                        .addComponent(jButton1)
+                        .addGap(84, 84, 84)
+                        .addComponent(jButton3)
+                        .addGap(174, 174, 174))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton2))
-                .addGap(69, 69, 69)
-                .addComponent(jButton3)
-                .addGap(63, 63, 63)
-                .addComponent(jButton4)
-                .addGap(111, 111, 111))
+                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(385, 385, 385))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,15 +210,14 @@ public class Administrator extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButton1)
                     .addComponent(jRadioButton2)
-                    .addComponent(jLabel3)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jButton3))
                 .addGap(39, 39, 39))
         );
 
@@ -224,6 +225,7 @@ public class Administrator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         boolean flag = true;
@@ -240,20 +242,26 @@ public class Administrator extends javax.swing.JFrame {
         String status=null;
         ButtonModel bm1=this.jRadioButton1.getModel();
         ButtonModel bm2=this.jRadioButton2.getModel();
-        if(this.buttonGroup1.isSelected(bm1)){//选择教师
-            status=this.jRadioButton1.getText();
-        }
-        else if(this.buttonGroup1.isSelected(bm2)){//选择学生
-            status=this.jRadioButton2.getText();
-        }
-        else
-            JOptionPane.showMessageDialog(null, "请选择账号类型", "添加失败",JOptionPane.ERROR_MESSAGE);
         if(flag){//账号唯一
-        Vector v = new Vector();
-        v.add(this.jTextField1.getText());
-        v.add(this.jTextField2.getText());
-        v.add(status);
-        dtm.addRow(v);
+            if(this.buttonGroup1.isSelected(bm1)){//选择教师
+                status="teacher";
+                Sqlserver sql = new Sqlserver();
+                sql.putUser(jTextField1.getText(),jTextField3.getText(),jTextField2.getText(),"teacher");
+            }
+            else if(this.buttonGroup1.isSelected(bm2)){//选择学生
+                status= "student";
+                Sqlserver sql = new Sqlserver();
+                sql.putUser(jTextField1.getText(),jTextField3.getText(),jTextField2.getText(),"student");
+            }
+            else
+                JOptionPane.showMessageDialog(null, "请选择账号类型", "添加失败",JOptionPane.ERROR_MESSAGE);
+
+            Vector v = new Vector();
+            v.add(this.jTextField1.getText());
+            v.add(this.jTextField3.getText());
+            v.add(this.jTextField2.getText());
+            v.add(status);
+            dtm.addRow(v);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -265,6 +273,10 @@ public class Administrator extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         int row = jTable1.getSelectedRow();//获得选择的行
+        String id = jTable1.getValueAt(jTable1.getSelectedRow(),0).toString();
+        Sqlserver sql = new Sqlserver();
+        sql.delUser(id);
+        //······························································
         dtm.removeRow(row);
         this.jTextField1.setText(null);
         this.jTextField2.setText(null);
@@ -276,10 +288,10 @@ public class Administrator extends javax.swing.JFrame {
         boolean flag = true;
         int nowrow = jTable1.getSelectedRow();
         int row = 0;
-        String account = this.jTextField1.getText(); 
+        String account = this.jTextField1.getText();
         while (row < this.jTable1.getRowCount()) {
-             if(nowrow==row){
-                 row++;
+            if(nowrow==row){
+                row++;
                 continue;
             }
             if (account.equalsIgnoreCase(dtm.getValueAt(row, 0).toString())) {
@@ -291,42 +303,53 @@ public class Administrator extends javax.swing.JFrame {
         }
         String status=null;
         ButtonModel bm1=this.jRadioButton1.getModel();
-        ButtonModel bm2=this.jRadioButton1.getModel();
-        if(this.buttonGroup1.isSelected(bm1)){//选择教师
-           status=this.jRadioButton1.getText();
-        }
-        else if(this.buttonGroup1.isSelected(bm2)){//选择学生
-             status=this.jRadioButton2.getText();
-        }
-        else//没有选择账号类型
-            JOptionPane.showMessageDialog(null, "请选择账号类型", "修改失败",JOptionPane.ERROR_MESSAGE);
-        if (flag) {//账号唯一
+        ButtonModel bm2=this.jRadioButton2.getModel();
+        if(flag){//账号唯一
+            if(bm1.isSelected()){//选择教师
+                status="teacher";
+                Sqlserver sql = new Sqlserver();
+                sql.updUser(jTextField1.getText(),jTextField3.getText(),jTextField2.getText(),"teacher");
+
+            }
+            else if(bm2.isSelected()){//选择学生
+                status= "student";
+                Sqlserver sql = new Sqlserver();
+                sql.updUser(jTextField1.getText(),jTextField3.getText(),jTextField2.getText(),"student");
+            }
+            else
+                JOptionPane.showMessageDialog(null, "请选择账号类型", "添加失败",JOptionPane.ERROR_MESSAGE);
+
             row = jTable1.getSelectedRow();
-            dtm.setValueAt(this.jTextField1.getText(), row, 0);
-            dtm.setValueAt(this.jTextField2.getText(), row, 1);
-            dtm.setValueAt(status, row, 3);
+            dtm.setValueAt(this.jTextField3.getText(), row, 1);//改姓名
+            dtm.setValueAt(this.jTextField2.getText(), row, 2);//改密码
+            dtm.setValueAt(status, row, 3);//改rank
         }
+
+        //////
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-        /*重新存账号
-        try {
-            User book = new User();
-            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-            int row = 0;
-            DAOFactory.getUserDAOInstance().deleteBook();//删除数据库信息
-            while (row < this.jTable1.getRowCount()) {
-                book.setAccount(dtm.getValueAt(row, 0).toString());
-                book.setPassword(dtm.getValueAt(row, 1).toString());
-                book.setStatus(dtm.getValueAt(row, 2).toString());
-                DAOFactory.getUserDAOInstance().saveTable(User);//向数据库插入信息
-                row++;
-            }
-        } catch (SQLException e) {
+        //鼠标点击选中表格中一行信息可像是在文本字段中。
+        DefaultTableModel dtm=(DefaultTableModel)jTable1.getModel();
+        int row=jTable1.getSelectedRow();//获得行数
+        //函数getValueAt返回要查询的行和列处单元格的属性值
+        this.jTextField1.setText(dtm.getValueAt(row, 0).toString());
+        this.jTextField2.setText(dtm.getValueAt(row, 2).toString());
+        this.jTextField3.setText(dtm.getValueAt(row, 1).toString());
+        if(dtm.getValueAt(row, 3).toString().equalsIgnoreCase("教师")){
+             this.jRadioButton1.setSelected(true);
+             this.jRadioButton2.setSelected(false);
         }
-      */
-    }//GEN-LAST:event_jButton4ActionPerformed
+        else{
+            this.jRadioButton2.setSelected(true);
+            this.jRadioButton1.setSelected(false);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -368,7 +391,6 @@ public class Administrator extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

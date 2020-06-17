@@ -86,7 +86,7 @@ public class Server {
 
         private int ID;
 
-        private String name;
+        private String name = "STUDENT";
         private String stuid;
 
         private DataOutputStream dataOutputStream;
@@ -158,7 +158,7 @@ public class Server {
                         msg=dataInputStream.readUTF();
                         if (msg.equals("MSG:TEXT")) {
                             String text = dataInputStream.readUTF();
-                            serverEvent.onReceiveText(text);
+                            serverEvent.onReceiveText(name, text);
                             RelayText(getID(), name, text);
 //                            clients.get(ID).sendText(name, text);
                         } else if (msg.equals("MSG:FILE")) {
@@ -210,7 +210,7 @@ public class Server {
     public static void main(String[] args) {
         Server s = new Server(new ServerEvent() {
             @Override
-            public void onReceiveText(String text) {
+            public void onReceiveText(String sender, String text) {
                 System.out.println(text);
             }
 

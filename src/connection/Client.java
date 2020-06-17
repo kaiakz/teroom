@@ -157,7 +157,7 @@ public class Client {
         try {
             c.Login("王小明", "11111");
             c.sendText("Hello");
-            c.sendFile("/run/media/kai/Dev/Telegram/Telegram");
+//            c.sendFile("/run/media/kai/Dev/Telegram/Telegram");
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package JFrame;
+package Teacher;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -22,15 +22,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 //import sqlserver.*;
-//import connection.*;
+import connection.*;
 /**
  *
  * @author LinBun
  */
 public class Teachchat extends javax.swing.JFrame {
-    DataInputStream dis;
-    DataOutputStream dos;
+//    DataInputStream dis;
+//    DataOutputStream dos;
     String id;
+
+    Server server;
+
     /**
      * Creates new form teachchant
      */
@@ -44,6 +47,22 @@ public class Teachchat extends javax.swing.JFrame {
         this.id = id;
         jLabel2.setText(id);
        // this.connect();
+        server = new Server(new ServerEvent() {
+            @Override
+            public void onReceiveText(String sender, String text) {
+                jTextArea1.append(sender + "\n" + text);
+            }
+
+            @Override
+            public void onReceiveFile(String filename) {
+
+            }
+
+            @Override
+            public void onLogin(String id, String name) {
+
+            }
+        });
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -205,13 +224,16 @@ public class Teachchat extends javax.swing.JFrame {
         // TODO add your handling code here:
         //发送按钮
         try{
-            dos.writeUTF(jTextArea2.getText());//将输入框里的文本发送到输出流
+//            dos.writeUTF(jTextArea2.getText());//将输入框里的文本发送到输出流
+            String text = jTextArea2.getText();
             Date time = new Date();
             jTextArea1.append("老师\t"+time.toLocaleString()+"\n"+jTextArea2.getText()+"\n");
+            //
             //追加聊天记录
             jTextArea1.setCaretPosition(jTextArea1.getText().length());
             //滚动条置底
             jTextArea2.setText(null);//清屏
+            server.broadcastText(text);
         }catch(IOException ex){
             ex.printStackTrace();
         }                                        

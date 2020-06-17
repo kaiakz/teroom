@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package JFrame;
+package Teacher;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.sql.ResultSet;

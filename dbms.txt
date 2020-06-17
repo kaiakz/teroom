@@ -1,0 +1,33 @@
+create table password(
+ ID string primary key not null,
+ name string not null,
+ psw string,
+ rank string
+);
+
+create table class(
+ classID string primary key not null,
+ className string
+);
+
+create table net(
+ ID string not null,
+ classID string not null,
+ ip string not null,
+ port string not null,
+ signTime datetime not null,
+ foreign key(ID) references password(ID),
+ foreign key(classID) references class(classID)
+);
+
+create table messageLog(
+ ID string not null,
+ text string,
+ mes_time datetime not null
+);
+
+insert into password values("S001","李明",NULL,"student");
+insert into password values("T001","教师1","123456","teacher");
+insert into class values("C1","Java程序设计");
+insert into net values("T001","C1","192.168.0.1","80",datetime("now","+8 hour"));
+insert into messagelog values("T001","Hello World",datetime("now","+8 hour"));
