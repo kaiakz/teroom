@@ -25,6 +25,14 @@ public class Client {
         new Thread(new Receiver()).start();
     }
 
+    private DataInputStream getDataInputStream() {
+        return dataInputStream;
+    }
+
+    public DataOutputStream getDataOutputStream() {
+        return dataOutputStream;
+    }
+
     private void ConnectServer() throws IOException{
 
             MulticastSocket ms = new MulticastSocket(8924);
@@ -105,8 +113,8 @@ public class Client {
                         clientEvent.onReceiveText(sender, text);
                     } else if (msg.equals("MSG:FILE")) {
                         String fname = getFile();
-                        String sender = dataInputStream.readUTF();
-                        clientEvent.onReceiveFile(sender, fname);
+//                        String sender = dataInputStream.readUTF();
+                        clientEvent.onReceiveFile("TEACHER", fname);
                     }
                 }
             } catch (Exception e) {
@@ -149,7 +157,7 @@ public class Client {
         try {
             c.Login("王小明", "11111");
             c.sendText("Hello");
-//            c.sendFile("/run/media/kai/Dev/Telegram/Telegram");
+            c.sendFile("/run/media/kai/Dev/Telegram/Telegram");
 
         } catch (IOException e) {
             e.printStackTrace();

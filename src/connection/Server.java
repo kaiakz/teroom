@@ -20,7 +20,7 @@ public class Server {
 
     public void RelayText(int sender, String name, String text) throws IOException{
         for (int i = 0; i < clients.size(); i++) {
-            if (i == sender)    continue;
+            if (i == sender || clients.get(i) == null)    continue;
             String tmp = name;
             if (tmp == null) {
                 tmp = "Student" + i;
@@ -172,6 +172,17 @@ public class Server {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    clients.set(ID, null);
+                    try {
+                        dataInputStream.close();
+                        dataOutputStream.close();
+                        connection.shutdownInput();
+                        connection.shutdownOutput();
+                        connection.close();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
 
