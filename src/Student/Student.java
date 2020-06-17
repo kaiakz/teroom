@@ -8,6 +8,8 @@ package Student;
 import connection.Client;
 import connection.ClientEvent;
 
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
@@ -20,7 +22,7 @@ public class Student extends javax.swing.JFrame {
     private String id;
     private String name;
     /**
-     * Creates new form Test
+     * Creates new form Student
      */
     public Student() {
         initComponents();
@@ -29,14 +31,15 @@ public class Student extends javax.swing.JFrame {
         c = new Client(new ClientEvent() {
             @Override
             public void onReceiveText(String sender, String text) {
-                Date time=new Date();
                 jTextArea1.append(sender+" 说：\n");
                 jTextArea1.append(text+"\n\n");
+                jTextArea1.setCaretPosition(jTextArea1.getText().length());
             }
 
             @Override
             public void onReceiveFile(String sender, String filename) {
-
+                jTextArea1.append(sender+"发送了文件"+filename+"\n\n");
+                jTextArea1.setCaretPosition(jTextArea1.getText().length());
             }
         });
 
@@ -77,6 +80,11 @@ public class Student extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("黑体", 0, 18)); // NOI18N
         jButton1.setText("发送");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,7 +116,6 @@ public class Student extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{
-            //Date time=new Date();
             String s=jTextArea2.getText();
             c.sendText(s);
             jTextArea1.append(name+" 说：\n");
