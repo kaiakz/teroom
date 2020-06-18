@@ -4,8 +4,11 @@
  * and open the template in the editor.
  */
 
-package JFrame;
+package Teacher;
 import javax.swing.table.DefaultTableModel;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author LinBun
@@ -15,12 +18,19 @@ public class Sign extends javax.swing.JFrame {
     /**
      * Creates new form Sign
      */
-    public Sign() {
+    HashMap<String, String> students;
+
+    public Sign(HashMap<String, String> stu) {
         initComponents();
+
+        students = stu;
+
         this.setTitle("签到情况");//设定标题
         this.setLocationRelativeTo(null);
         //this.sql = new Sqlserver();
         this.initTable();//表格初始化
+
+
     }
      public void initTable(){ 
         //初始化
@@ -30,6 +40,9 @@ public class Sign extends javax.swing.JFrame {
             接收到学生的签到信息写入数据库
             在这里从数据库里取出来
            */
+            for (Map.Entry<String, String> entry : students.entrySet()) {
+                dtm.addRow(new Object[]{entry.getKey(), entry.getValue()});
+            }
         } catch (Exception ex) {
         }
     }
@@ -117,7 +130,7 @@ public class Sign extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Sign().setVisible(true);
+//                new Sign().setVisible(true);
             }
         });
     }
