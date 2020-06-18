@@ -3,7 +3,6 @@ package connection;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Server {
     ArrayList<Connection> clients;
@@ -119,7 +118,7 @@ public class Server {
         }
 
         public void sendText(String sender, String text) throws IOException {
-            dataOutputStream.writeUTF("MSG:TEXT");
+            dataOutputStream.writeInt(MsgCode.TEXT);
             dataOutputStream.flush();
             dataOutputStream.writeUTF(sender);
             dataOutputStream.flush();
@@ -128,7 +127,7 @@ public class Server {
         }
 
         public void sendFile(String filepath) throws IOException {
-            dataOutputStream.writeUTF("MSG:FILE");
+            dataOutputStream.writeInt(MsgCode.FILE);
             dataOutputStream.flush();
 
             File f = new File(filepath);
@@ -149,25 +148,37 @@ public class Server {
             fos.close();
         }
 
+        public void sendQuiz(String quiz) throws IOException {
+            dataOutputStream.writeInt(MsgCode.QUIZ);
+            dataOutputStream.flush();
+            dataOutputStream.writeUTF(quiz);
+            dataOutputStream.flush();
+        }
+
         class Receiver implements Runnable {
             @Override
             public void run() {
                 try {
-                    String msg;
+                    int code;
                     while (true) {
-                        msg=dataInputStream.readUTF();
-                        if (msg.equals("MSG:TEXT")) {
-                            String text = dataInputStream.readUTF();
-                            serverEvent.onReceiveText(name, text);
-                            RelayText(getID(), name, text);
-//                            clients.get(ID).sendText(name, text);
-                        } else if (msg.equals("MSG:FILE")) {
-                            String fname = getFile();
-                            serverEvent.onReceiveFile(fname);
-                        } else if (msg.equals("MSG:LOGIN")) {
-                            name = dataInputStream.readUTF();
-                            stuid = dataInputStream.readUTF();
-                            serverEvent.onLogin(stuid, name);
+                        code = dataInputStream.readInt();
+                        switch (code) {
+                            case MsgCode.TEXT:
+                                String text = dataInputStream.readUTF();
+                                serverEvent.onReceiveText(name, text);
+                                RelayText(getID(), name, text);
+                                break;
+                            case MsgCode.FILE:
+                                String fname = getFile();
+                                serverEvent.onReceiveFile(fname);
+                                break;
+                            case MsgCode.LOGIN:
+                                name = dataInputStream.readUTF();
+                                stuid = dataInputStream.readUTF();
+                                boolean res = serverEvent.onLogin(stuid, name);
+                                dataOutputStream.writeBoolean(res);
+                                dataOutputStream.flush();
+                                break;
                         }
                     }
                 } catch (Exception e) {
@@ -220,8 +231,9 @@ public class Server {
             }
 
             @Override
-            public void onLogin(String id, String name) {
+            public boolean onLogin(String id, String name) {
                 System.out.println("Login" + id + name);
+                return true;
             }
 
 

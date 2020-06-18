@@ -5,8 +5,6 @@
  */
 
 package Teacher;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -42,7 +40,7 @@ public class Teachchat extends javax.swing.JFrame {
     }
     public Teachchat(String id) {
         initComponents();
-        this.setTitle("聊天");//设定标题
+        this.setTitle("教师主界面");//设定标题
         this.setLocationRelativeTo(null);
         this.id = id;
         jLabel2.setText(id);
@@ -59,8 +57,8 @@ public class Teachchat extends javax.swing.JFrame {
             }
 
             @Override
-            public void onLogin(String id, String name) {
-
+            public boolean onLogin(String id, String name) {
+                return true;    // Auth
             }
         });
     }

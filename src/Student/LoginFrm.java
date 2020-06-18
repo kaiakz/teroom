@@ -5,6 +5,8 @@
  */
 package Student;
 
+import javax.swing.*;
+
 /**
  *
  * @author 123
@@ -111,12 +113,19 @@ public class LoginFrm extends javax.swing.JFrame {
         String id=jTextField2.getText();
         this.parent.setStudent(name, id);
         try {
-            this.parent.c.Login(name, id);
+            boolean res = this.parent.c.Login(name, id);
+            if (res) {
+                JOptionPane.showMessageDialog(null, "Login Successfully");
+                this.dispose();
+                this.parent.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Wrong Name or ID");
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("登录失败");
         }
-        this.dispose();
-        this.parent.setVisible(true);
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

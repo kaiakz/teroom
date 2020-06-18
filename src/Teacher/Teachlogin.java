@@ -5,6 +5,9 @@
  */
 
 package JFrame;
+import Teacher.Administrator;
+import Teacher.Teachchat;
+
 import java.io.*;
 import java.util.*;
 import java.net.*;

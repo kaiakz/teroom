@@ -5,7 +5,7 @@ public interface ServerEvent {
 
     public void onReceiveFile(String filename);
 
-    public void onLogin(String id, String name);
+    public boolean onLogin(String id, String name);     // Needs auth, if id & name is pass, return true
 
 
 }
