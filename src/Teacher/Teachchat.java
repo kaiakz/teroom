@@ -6,20 +6,8 @@
 
 package Teacher;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
-import java.util.Vector;
-import javax.swing.ButtonModel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.table.DefaultTableModel;
-//import sqlserver.*;
+import java.util.HashMap;
 import connection.*;
 /**
  *
@@ -29,8 +17,9 @@ public class Teachchat extends javax.swing.JFrame {
 //    DataInputStream dis;
 //    DataOutputStream dos;
     String id;
-
     Server server;
+
+    HashMap<String, String> students;
 
     /**
      * Creates new form teachchant
@@ -44,7 +33,9 @@ public class Teachchat extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.id = id;
         jLabel2.setText(id);
-       // this.connect();
+
+        students = new HashMap<>();
+
         server = new Server(new ServerEvent() {
             @Override
             public void onReceiveText(String sender, String text) {
@@ -58,6 +49,7 @@ public class Teachchat extends javax.swing.JFrame {
 
             @Override
             public boolean onLogin(String id, String name) {
+                students.put(id, name);
                 return true;    // Auth
             }
         });
@@ -111,7 +103,7 @@ public class Teachchat extends javax.swing.JFrame {
         });
 
         jButton3.setFont(new java.awt.Font("黑体", 0, 18)); // NOI18N
-        jButton3.setText("开启签到");
+        jButton3.setText("签到统计");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -245,6 +237,12 @@ public class Teachchat extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         //开启签到
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new Sign(students).setVisible(true);
+            }
+        }).start();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
