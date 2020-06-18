@@ -41,6 +41,11 @@ public class Student extends javax.swing.JFrame {
                 jTextArea1.append(sender+"发送了文件"+filename+"\n\n");
                 jTextArea1.setCaretPosition(jTextArea1.getText().length());
             }
+
+            @Override
+            public void onReceivedQuiz(String quiz) {
+
+            }
         });
 
         new LoginFrm(this).setVisible(true);
