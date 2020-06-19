@@ -5,32 +5,24 @@
  */
 
 package Teacher;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
-import java.util.Vector;
-import javax.swing.ButtonModel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.table.DefaultTableModel;
-//import sqlserver.*;
-//import connection.*;
+import java.util.HashMap;
+import connection.*;
+import sqlserver.Sqlserver;
+
 /**
  *
  * @author LinBun
  */
 public class Teachchat extends javax.swing.JFrame {
-    DataInputStream dis;
-    DataOutputStream dos;
+//    DataInputStream dis;
+//    DataOutputStream dos;
     String id;
+    Server server;
+
+    HashMap<String, String> students;
+
     /**
      * Creates new form teachchant
      */
@@ -39,11 +31,33 @@ public class Teachchat extends javax.swing.JFrame {
     }
     public Teachchat(String id) {
         initComponents();
-        this.setTitle("聊天");//设定标题
+        this.setTitle("教师主界面");//设定标题
         this.setLocationRelativeTo(null);
         this.id = id;
         jLabel2.setText(id);
-       // this.connect();
+
+        students = new HashMap<>();
+
+        server = new Server(new ServerEvent() {
+            @Override
+            public void onReceiveText(String sender, String text) {
+                jTextArea1.append(sender + "\n" + text);
+            }
+
+            @Override
+            public void onReceiveFile(String filename) {
+
+            }
+
+            @Override
+            public boolean onLogin(String id, String name) {
+                Sqlserver sql =new Sqlserver();
+                if(sql.stuLogin(id,name)){
+                    students.put(id, name);
+                    return true;    // Auth
+                }else return false;
+            }
+        });
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -94,7 +108,7 @@ public class Teachchat extends javax.swing.JFrame {
         });
 
         jButton3.setFont(new java.awt.Font("黑体", 0, 18)); // NOI18N
-        jButton3.setText("开启签到");
+        jButton3.setText("签到统计");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -205,13 +219,16 @@ public class Teachchat extends javax.swing.JFrame {
         // TODO add your handling code here:
         //发送按钮
         try{
-            dos.writeUTF(jTextArea2.getText());//将输入框里的文本发送到输出流
+//            dos.writeUTF(jTextArea2.getText());//将输入框里的文本发送到输出流
+            String text = jTextArea2.getText();
             Date time = new Date();
             jTextArea1.append("老师\t"+time.toLocaleString()+"\n"+jTextArea2.getText()+"\n");
+            //
             //追加聊天记录
             jTextArea1.setCaretPosition(jTextArea1.getText().length());
             //滚动条置底
             jTextArea2.setText(null);//清屏
+            server.broadcastText(text);
         }catch(IOException ex){
             ex.printStackTrace();
         }                                        
@@ -225,6 +242,12 @@ public class Teachchat extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         //开启签到
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new Sign(students).setVisible(true);
+            }
+        }).start();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

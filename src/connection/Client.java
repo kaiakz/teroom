@@ -22,7 +22,15 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new Thread(new Receiver()).start();
+//        new Thread(new Receiver()).start();
+    }
+
+    private DataInputStream getDataInputStream() {
+        return dataInputStream;
+    }
+
+    public DataOutputStream getDataOutputStream() {
+        return dataOutputStream;
     }
 
     private void ConnectServer() throws IOException{
@@ -55,14 +63,14 @@ public class Client {
     }
 
     public void sendText(String text) throws IOException {
-        dataOutputStream.writeUTF("MSG:TEXT");
+        dataOutputStream.writeInt(MsgCode.TEXT);
         dataOutputStream.flush();
         dataOutputStream.writeUTF(text);
         dataOutputStream.flush();
     }
 
     public void sendFile(String filepath) throws IOException {
-        dataOutputStream.writeUTF("MSG:FILE");
+        dataOutputStream.writeInt(MsgCode.FILE);
         dataOutputStream.flush();
 
         File f = new File(filepath);
@@ -83,30 +91,42 @@ public class Client {
         fos.close();
     }
 
-    public void Login(String name, String id) throws IOException {
-        dataOutputStream.writeUTF("MSG:HELLO");
+    public boolean Login(String name, String id) throws IOException {
+        dataOutputStream.writeInt(MsgCode.LOGIN);
         dataOutputStream.flush();
         dataOutputStream.writeUTF(name);
         dataOutputStream.flush();
         dataOutputStream.writeUTF(id);
         dataOutputStream.flush();
+        boolean res = dataInputStream.readBoolean();
+        if (res) {
+            new Thread(new Receiver()).start();
+        }
+        return res;
     }
 
     class Receiver implements Runnable {
         @Override
         public void run() {
             try {
-                String msg;
+                int code;
                 while (true) {
-                    msg=dataInputStream.readUTF();
-                    if (msg.equals("MSG:TEXT")) {
-                        String sender = dataInputStream.readUTF();
-                        String text = dataInputStream.readUTF();
-                        clientEvent.onReceiveText(sender, text);
-                    } else if (msg.equals("MSG:FILE")) {
-                        String fname = getFile();
-                        String sender = dataInputStream.readUTF();
-                        clientEvent.onReceiveFile(sender, fname);
+                    code = dataInputStream.readInt();
+                    switch (code) {
+                        case MsgCode.TEXT:
+                            String sender = dataInputStream.readUTF();
+                            String text = dataInputStream.readUTF();
+                            clientEvent.onReceiveText(sender, text);
+                            break;
+                        case MsgCode.FILE:
+                            String fname = getFile();
+//                            String sender = dataInputStream.readUTF();
+                            clientEvent.onReceiveFile("TEACHER", fname);
+                            break;
+                        case MsgCode.QUIZ:
+                            String quiz = dataInputStream.readUTF();
+                            clientEvent.onReceivedQuiz(quiz);
+                            break;
                     }
                 }
             } catch (Exception e) {
@@ -137,18 +157,24 @@ public class Client {
         Client c = new Client(new ClientEvent() {
             @Override
             public void onReceiveText(String sender, String text) {
-                System.out.println(text);
+                System.out.println(sender + " Says " + text);
             }
 
             @Override
             public void onReceiveFile(String sender, String filename) {
 
             }
+
+            @Override
+            public void onReceivedQuiz(String quiz) {
+
+            }
         });
 
         try {
+            c.Login("王小明", "11111");
             c.sendText("Hello");
-            c.sendFile("/run/media/kai/Dev/Telegram/Telegram");
+//            c.sendFile("/run/media/kai/Dev/Telegram/Telegram");
 
         } catch (IOException e) {
             e.printStackTrace();
