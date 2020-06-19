@@ -9,11 +9,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import connection.*;
-<<<<<<< HEAD
-=======
 import sqlserver.Sqlserver;
 
->>>>>>> origin/sqlite
 /**
  *
  * @author LinBun
@@ -54,16 +51,11 @@ public class Teachchat extends javax.swing.JFrame {
 
             @Override
             public boolean onLogin(String id, String name) {
-<<<<<<< HEAD
-                students.put(id, name);
-                return true;    // Auth
-=======
                 Sqlserver sql =new Sqlserver();
                 if(sql.stuLogin(id,name)){
                     students.put(id, name);
                     return true;    // Auth
                 }else return false;
->>>>>>> origin/sqlite
             }
         });
     }
