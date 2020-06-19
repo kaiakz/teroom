@@ -59,7 +59,25 @@ public class Sqlserver {
 
 //datetime("now","+8 hour")
     public boolean teacherSign(String ID, String psw){ //教师登录函数 如果查询到ID与password均正确，则返回true，反之false
-        String str = "select * from password where ID =\"" + ID + "\" and psw =\"" + psw +"\";";
+        String str = "select * from password where ID =\"" + ID + "\" and psw =\"" + psw +"\" and rank = \"teacher\";";
+        System.out.println(str);
+        try{
+            ResultSet rs;
+            sql sq = new sql();
+            rs = sq.stmt.executeQuery(str);
+            String sttt = rs.getString("ID");
+            sq.over();
+            if(sttt.equals(ID)) return true;
+            else return false;
+        }catch (Exception e){
+            System.err.println((e.getClass().getName()+":"+e.getMessage()));
+            System.out.println("error");
+            return false;
+        }
+    }
+
+    public boolean stuLogin(String ID, String name){ //学生登录函数 如果查询到ID与name均正确，则返回true，反之false
+        String str = "select * from password where ID =\"" + ID + "\" and name =\"" + name +"\" and rank = \"student\";";
         System.out.println(str);
         try{
             ResultSet rs;

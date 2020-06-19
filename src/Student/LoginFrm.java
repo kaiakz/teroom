@@ -111,10 +111,17 @@ public class LoginFrm extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String name=jTextField1.getText();
         String id=jTextField2.getText();
+<<<<<<< HEAD
         this.parent.setStudent(name, id);
         try {
             boolean res = this.parent.c.Login(name, id);
             if (res) {
+=======
+        try {
+            boolean res = this.parent.c.Login(name, id);
+            if (res) {
+                this.parent.setStudent(name, id);
+>>>>>>> origin/sqlite
                 JOptionPane.showMessageDialog(null, "Login Successfully");
                 this.dispose();
                 this.parent.setVisible(true);
