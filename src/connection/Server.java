@@ -201,7 +201,14 @@ public class Server {
                 String fname = dataInputStream.readUTF();
                 long flen = dataInputStream.readLong();
 
-                FileOutputStream fos = new FileOutputStream(new File("e-" + fname));
+                final String path = "download";
+
+                File f = new File("download");
+                if(!f.exists()){
+                    f.mkdir(); //create temp directory on current location in which all images will be stored if not exists
+                }
+
+                FileOutputStream fos = new FileOutputStream(new File(path + '/' + fname));
 
                 int dlen = 0;
                 byte[] buf = new byte[4096];
@@ -212,7 +219,7 @@ public class Server {
                     dlen += len;
                 }
                 fos.close();
-                return fname;
+                return path + '/' + fname;
             }
         }
 
