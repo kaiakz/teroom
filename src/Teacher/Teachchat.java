@@ -6,6 +6,7 @@
 
 package Teacher;
 import java.io.IOException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.Date;
 import java.util.HashMap;
 import connection.*;
@@ -31,6 +32,8 @@ public class Teachchat extends javax.swing.JFrame {
     }
     public Teachchat(String id) {
         initComponents();
+        Sqlserver sql = new Sqlserver();
+        sql.refleshLogin();
         this.setTitle("教师主界面");//设定标题
         this.setLocationRelativeTo(null);
         this.id = id;
@@ -54,6 +57,7 @@ public class Teachchat extends javax.swing.JFrame {
                 Sqlserver sql =new Sqlserver();
                 if(sql.stuLogin(id,name)){
                     students.put(id, name);
+
                     return true;    // Auth
                 }else return false;
             }
