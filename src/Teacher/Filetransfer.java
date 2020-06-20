@@ -7,6 +7,7 @@
 package JFrame;
 import javax.swing.*;
 import java.io.File;
+import connection.*;
 /**
  *
  * @author LinBun
@@ -106,13 +107,17 @@ public class Filetransfer extends javax.swing.JFrame {
         // TODO add your handling code here:
         //发送按钮
         String path = this.jTextField1.getText();
-        /*
-        文件传输的方法
-        if(发送成功)
-            JOptionPane.showMessageDialog(this, "文件发送成功", "发送成功", JOptionPane.INFORMATION_MESSAGE);//弹出警告框
-        else
-            JOptionPane.showMessageDialog(this, "文件发送失败", "发送失败", JOptionPane.INFORMATION_MESSAGE);//弹出警告框
-        */
+         if(this.path == "")//路径为空
+            JOptionPane.showMessageDialog(this, "请选择文件", "发送失败", JOptionPane.INFORMATION_MESSAGE);//弹出警告框
+        else{
+            try{
+                sendFile(this.path);//发送文件
+                JOptionPane.showMessageDialog(this, "文件发送成功", "发送成功", JOptionPane.INFORMATION_MESSAGE);//弹出警告框
+        
+            }catch(IOException ex){
+                JOptionPane.showMessageDialog(this, "文件发送失败", "发送失败", JOptionPane.INFORMATION_MESSAGE);//弹出警告框
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
