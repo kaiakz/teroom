@@ -85,7 +85,12 @@ public class Sqlserver {
             rs = sq.stmt.executeQuery(str);
             String sttt = rs.getString("ID");
             sq.over();
-            if(sttt.equals(ID)) return true;
+            if(sttt.equals(ID)){
+                String str1 = "insert into login values(\"" + ID +"\",\"" + name +"\");";
+                sql sq1 =new sql();
+                sq1.stmt.executeUpdate(str1);
+                return true;
+            }
             else return false;
         }catch (Exception e){
             System.err.println((e.getClass().getName()+":"+e.getMessage()));
@@ -184,8 +189,8 @@ public class Sqlserver {
         return rt;
     }
 
-    public void refleshNet(){ //重置签到(签入)表
-        String str = "delete from net";
+    public void refleshLogin(){ //重置签到(签入)表
+        String str = "delete from login";
         System.out.println(str);
         try{
             int a;
