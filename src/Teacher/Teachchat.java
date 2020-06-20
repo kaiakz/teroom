@@ -6,11 +6,10 @@
 
 package Teacher;
 import java.io.IOException;
-import java.sql.SQLSyntaxErrorException;
 import java.util.Date;
 import java.util.HashMap;
 import connection.*;
-import sqlserver.Sqlserver;
+import sqlite.Sqlservice;
 
 /**
  *
@@ -32,7 +31,7 @@ public class Teachchat extends javax.swing.JFrame {
     }
     public Teachchat(String id) {
         initComponents();
-        Sqlserver sql = new Sqlserver();
+        Sqlservice sql = new Sqlservice();
         sql.refleshLogin();
         this.setTitle("教师主界面");//设定标题
         this.setLocationRelativeTo(null);
@@ -44,7 +43,9 @@ public class Teachchat extends javax.swing.JFrame {
         server = new Server(new ServerEvent() {
             @Override
             public void onReceiveText(String sender, String text) {
-                jTextArea1.append(sender + "\n" + text);
+                Date time = new Date();
+                jTextArea1.append(sender + "\t" + time.toLocaleString() + "\n" + text + "\n");
+                sql.putMessage(sender,text);
             }
 
             @Override
@@ -54,10 +55,8 @@ public class Teachchat extends javax.swing.JFrame {
 
             @Override
             public boolean onLogin(String id, String name) {
-                Sqlserver sql =new Sqlserver();
                 if(sql.stuLogin(id,name)){
                     students.put(id, name);
-
                     return true;    // Auth
                 }else return false;
             }
@@ -226,13 +225,15 @@ public class Teachchat extends javax.swing.JFrame {
 //            dos.writeUTF(jTextArea2.getText());//将输入框里的文本发送到输出流
             String text = jTextArea2.getText();
             Date time = new Date();
-            jTextArea1.append("老师\t"+time.toLocaleString()+"\n"+jTextArea2.getText()+"\n");
+            jTextArea1.append("教师\t"+time.toLocaleString()+"\n"+jTextArea2.getText()+"\n");
             //
             //追加聊天记录
             jTextArea1.setCaretPosition(jTextArea1.getText().length());
             //滚动条置底
             jTextArea2.setText(null);//清屏
             server.broadcastText(text);
+            Sqlservice sql = new Sqlservice();
+            sql.putMessage("教师",text);
         }catch(IOException ex){
             ex.printStackTrace();
         }                                        

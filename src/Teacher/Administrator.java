@@ -6,18 +6,15 @@
 
 package Teacher;
 
-import sqlserver.Sqlserver;
+import sqlite.Sqlservice;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Vector;
 import javax.swing.ButtonModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
-//import sqlserver.*;
+//import sqlservice.*;
 
 /**
  *
@@ -40,8 +37,8 @@ public class Administrator extends javax.swing.JFrame {
         //初始化
         DefaultTableModel dtm=(DefaultTableModel)jTable1.getModel();
         try {
-            Sqlserver sql = new Sqlserver();
-            Vector<sqlserver.mess> v1 = sql.getUser();
+            Sqlservice sql = new Sqlservice();
+            Vector<sqlite.mess> v1 = sql.getUser();
             for(int i = 0; i < v1.size(); i++){
                 Vector v=new Vector();
                 v.add(v1.elementAt(i).getT1());
@@ -245,12 +242,12 @@ public class Administrator extends javax.swing.JFrame {
         if(flag){//账号唯一
             if(this.buttonGroup1.isSelected(bm1)){//选择教师
                 status="teacher";
-                Sqlserver sql = new Sqlserver();
+                Sqlservice sql = new Sqlservice();
                 sql.putUser(jTextField1.getText(),jTextField3.getText(),jTextField2.getText(),"teacher");
             }
             else if(this.buttonGroup1.isSelected(bm2)){//选择学生
                 status= "student";
-                Sqlserver sql = new Sqlserver();
+                Sqlservice sql = new Sqlservice();
                 sql.putUser(jTextField1.getText(),jTextField3.getText(),jTextField2.getText(),"student");
             }
             else
@@ -274,7 +271,7 @@ public class Administrator extends javax.swing.JFrame {
         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
         int row = jTable1.getSelectedRow();//获得选择的行
         String id = jTable1.getValueAt(jTable1.getSelectedRow(),0).toString();
-        Sqlserver sql = new Sqlserver();
+        Sqlservice sql = new Sqlservice();
         sql.delUser(id);
         //······························································
         dtm.removeRow(row);
@@ -307,13 +304,13 @@ public class Administrator extends javax.swing.JFrame {
         if(flag){//账号唯一
             if(bm1.isSelected()){//选择教师
                 status="teacher";
-                Sqlserver sql = new Sqlserver();
+                Sqlservice sql = new Sqlservice();
                 sql.updUser(jTextField1.getText(),jTextField3.getText(),jTextField2.getText(),"teacher");
 
             }
             else if(bm2.isSelected()){//选择学生
                 status= "student";
-                Sqlserver sql = new Sqlserver();
+                Sqlservice sql = new Sqlservice();
                 sql.updUser(jTextField1.getText(),jTextField3.getText(),jTextField2.getText(),"student");
             }
             else

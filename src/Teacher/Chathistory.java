@@ -5,7 +5,13 @@
  */
 
 package Teacher;
-//import sqlserver.*;
+//import sqlservice.*;
+
+import sqlite.Sqlservice;
+import sqlite.mes;
+
+import java.util.Vector;
+
 /**
  *
  * @author LinBun
@@ -22,14 +28,15 @@ public class Chathistory extends javax.swing.JFrame {
         this.initTable();
     }
     public void initTable(){
-        /*
-        Sqlserver sql = new Sqlserver();//连接数据库获取聊天记录
+        Sqlservice sql = new Sqlservice();
         Vector<mes> rs1;
         rs1 = sql.getMeseage();
         for(int i = 0; i < rs1.size(); i++){
-            jTextArea1.append(rs1.elementAt(i).getT1() + " " + rs1.elementAt(i).getT3() + "\n" + rs1.elementAt(i).getT2()+"\n");
+            jTextArea1.append(rs1.elementAt(i).getT1().toString()+" "+rs1.elementAt(i).getT3().toString()+":\n"+rs1.elementAt(i).getT2().toString()+"\n");
         }
-        */
+
+
+
     }
     /**
      * This method is called from within the constructor to initialize the form.

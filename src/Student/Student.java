@@ -31,8 +31,9 @@ public class Student extends javax.swing.JFrame {
         c = new Client(new ClientEvent() {
             @Override
             public void onReceiveText(String sender, String text) {
-                jTextArea1.append(sender+" 说：\n");
-                jTextArea1.append(text+"\n\n");
+                Date time = new Date();
+                jTextArea1.append(sender+"\t"+time.toLocaleString()+"\n");
+                jTextArea1.append(text+"\n");
                 jTextArea1.setCaretPosition(jTextArea1.getText().length());
             }
 
@@ -126,7 +127,8 @@ public class Student extends javax.swing.JFrame {
         try{
             String s=jTextArea2.getText();
             c.sendText(s);
-            jTextArea1.append(name+" 说：\n");
+            Date time = new Date();
+            jTextArea1.append(this.name + "\t"+time.toLocaleString()+"\n");
             jTextArea1.append(s+"\n\n");
             jTextArea1.setCaretPosition(jTextArea1.getText().length());
             jTextArea2.setText("");

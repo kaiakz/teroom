@@ -30,7 +30,7 @@ public class Server {
 
     public void broadcastText(String text) throws IOException{
         for(Connection c:clients) {
-            c.sendText("Teacher", text);
+            c.sendText("教师", text);
         }
     }
 
