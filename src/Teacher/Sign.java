@@ -6,6 +6,7 @@
 
 package Teacher;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,13 @@ import java.util.Map;
  * @author LinBun
  */
 public class Sign extends javax.swing.JFrame {
+
+    @Override
+    protected void processWindowEvent(WindowEvent e){
+        if(e.getID() == WindowEvent.WINDOW_CLOSING){
+            dispose();
+        }
+    }
     //Sqlserver sql;
     /**
      * Creates new form Sign
