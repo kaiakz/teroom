@@ -269,6 +269,12 @@ public class Teachchat extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         //文件传输
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new Filetransfer(server).setVisible(true);
+            }
+        }).start();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     /**

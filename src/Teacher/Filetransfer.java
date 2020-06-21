@@ -6,6 +6,7 @@
 
 package Teacher;
 import javax.swing.*;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -26,6 +27,13 @@ public class Filetransfer extends javax.swing.JFrame {
         this.setTitle("文件传输");
         this.setLocationRelativeTo(null);
         this.server = server;
+    }
+
+    @Override
+    protected void processWindowEvent(WindowEvent e){
+        if(e.getID() == WindowEvent.WINDOW_CLOSING){
+            dispose();
+        }
     }
 
     /**
