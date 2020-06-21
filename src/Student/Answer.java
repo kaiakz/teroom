@@ -103,7 +103,7 @@ public class Answer extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            c.sendAnswer(q);
+            c.sendAnswer(jTextArea1.getText().trim());
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "发送失败，没有等待回答的问题");
