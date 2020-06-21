@@ -1,11 +1,11 @@
-package sqlserver;
+package sqlite;
 import java.sql.*;
 import java.util.Vector;
 
 
 
 
-public class Sqlserver {
+public class Sqlservice {
 
     class sql {
         Connection c = null;
@@ -39,14 +39,13 @@ public class Sqlserver {
 
 
 
-    public void putMessage(String ID, String message){ //消息记录写入函数
-        String str = "insert into messageLog values(\"" + ID + "\",\"" + message +"\",datetime(\"now\",\"+8 hour\"));";
+    public void putMessage(String name, String message){ //消息记录写入函数
+        String str = "insert into messageLog values(\"" + name + "\",\"" + message +"\",datetime(\"now\",\"+8 hour\"));";
         System.out.println(str);
         try{
             int a;
             sql sq = new sql();
-            a = sq.stmt.executeUpdate(str);
-//            System.out.println(a);
+            sq.stmt.executeUpdate(str);
             sq.c.commit();
             sq.over();
         }catch (Exception e){
@@ -89,6 +88,7 @@ public class Sqlserver {
                 String str1 = "insert into login values(\"" + ID +"\",\"" + name +"\");";
                 sql sq1 =new sql();
                 sq1.stmt.executeUpdate(str1);
+                sq1.over();
                 return true;
             }
             else return false;
@@ -122,7 +122,7 @@ public class Sqlserver {
         try{
             sql sq = new sql();
 //            System.out.println("OK");
-            ResultSet rs = sq.stmt.executeQuery("select password.name, messageLog.text, mes_time from password,messageLog where password.ID = messageLog.ID;");
+            ResultSet rs = sq.stmt.executeQuery("select name, text, mes_time from messageLog;");
 //            System.out.println("OK");
             while(rs.next()){
                 String rs1 = rs.getString("name");

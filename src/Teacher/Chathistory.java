@@ -5,12 +5,27 @@
  */
 
 package Teacher;
-//import sqlserver.*;
+//import sqlservice.*;
+
+import sqlite.Sqlservice;
+import sqlite.mes;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.util.Vector;
+
 /**
  *
  * @author LinBun
  */
 public class Chathistory extends javax.swing.JFrame {
+
+//    @Override
+//    protected void processWindowEvent(WindowEvent e){
+//        if(e.getID() == WindowEvent.WINDOW_CLOSING){
+//            setDefaultCloseOperation(2);
+//        }
+//    }
 
     /**
      * Creates new form Chathistory
@@ -22,14 +37,27 @@ public class Chathistory extends javax.swing.JFrame {
         this.initTable();
     }
     public void initTable(){
-        /*
-        Sqlserver sql = new Sqlserver();//连接数据库获取聊天记录
+        Sqlservice sql = new Sqlservice();
         Vector<mes> rs1;
         rs1 = sql.getMeseage();
         for(int i = 0; i < rs1.size(); i++){
-            jTextArea1.append(rs1.elementAt(i).getT1() + " " + rs1.elementAt(i).getT3() + "\n" + rs1.elementAt(i).getT2()+"\n");
+            jTextArea1.append(rs1.elementAt(i).getT1().toString()+" "+rs1.elementAt(i).getT3().toString()+":\n"+rs1.elementAt(i).getT2().toString()+"\n");
         }
-        */
+
+//        java.awt.event.ActionListener al=new java.awt.event.ActionListener(){
+//
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String cmd = e.getActionCommand();
+//                if(e.getID() == WindowEvent.WINDOW_CLOSING){
+//                    System.out.println(e.getID());
+//                    setDefaultCloseOperation(2);
+//                }
+//            }
+//
+//
+//        };
+
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -121,6 +149,8 @@ public class Chathistory extends javax.swing.JFrame {
             }
         });
     }
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

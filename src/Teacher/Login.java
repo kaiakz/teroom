@@ -5,7 +5,7 @@
  */
 
 package Teacher;
-import sqlserver.Sqlserver;
+import sqlite.Sqlservice;
 import javax.swing.*;
 
 /**
@@ -147,7 +147,7 @@ public class Login extends javax.swing.JFrame {
         ButtonModel model2 = jRadioButton2.getModel();
         String id = jTextField1.getText();
         String password = jPasswordField1.getText();//获得账号和密码
-        Sqlserver sql = new Sqlserver();
+        Sqlservice sql = new Sqlservice();
         boolean flag = sql.teacherSign(id,password);
         System.out.println(flag);
         if (this.buttonGroup1.isSelected(model1)){//选了教师
