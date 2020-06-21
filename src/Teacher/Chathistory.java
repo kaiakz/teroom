@@ -27,6 +27,13 @@ public class Chathistory extends javax.swing.JFrame {
 //        }
 //    }
 
+    @Override
+    protected void processWindowEvent(WindowEvent e){
+        if(e.getID() == WindowEvent.WINDOW_CLOSING){
+            dispose();
+        }
+    }
+
     /**
      * Creates new form Chathistory
      */

@@ -4,9 +4,11 @@
  * and open the template in the editor.
  */
 
-package JFrame;
+package Teacher;
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
+
 import connection.*;
 /**
  *
@@ -14,14 +16,16 @@ import connection.*;
  */
 public class Filetransfer extends javax.swing.JFrame {
     File file;
-    String path;
+    String path = "";
+    Server server;
     /**
      * Creates new form Filetransfer
      */
-    public Filetransfer() {
+    public Filetransfer(Server server) {
         initComponents();
         this.setTitle("文件传输");
         this.setLocationRelativeTo(null);
+        this.server = server;
     }
 
     /**
@@ -107,13 +111,12 @@ public class Filetransfer extends javax.swing.JFrame {
         // TODO add your handling code here:
         //发送按钮
         String path = this.jTextField1.getText();
-         if(this.path == "")//路径为空
+         if(this.path.equals(""))//路径为空
             JOptionPane.showMessageDialog(this, "请选择文件", "发送失败", JOptionPane.INFORMATION_MESSAGE);//弹出警告框
         else{
             try{
-                sendFile(this.path);//发送文件
+                server.broadcastFile(this.path);//发送文件
                 JOptionPane.showMessageDialog(this, "文件发送成功", "发送成功", JOptionPane.INFORMATION_MESSAGE);//弹出警告框
-        
             }catch(IOException ex){
                 JOptionPane.showMessageDialog(this, "文件发送失败", "发送失败", JOptionPane.INFORMATION_MESSAGE);//弹出警告框
             }
@@ -127,7 +130,11 @@ public class Filetransfer extends javax.swing.JFrame {
         jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );//允许文件和文件夹
         jfc.showDialog(new JLabel(), "选择");
         this.file=jfc.getSelectedFile();//可以直接获得文件
-        this.path = file.getAbsolutePath();//也可以获得路径
+        if (this.file == null) {
+            this.path = "";
+        } else {
+            this.path = file.getAbsolutePath();//也可以获得路径
+        }
         jTextField1.setText(this.path);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -159,11 +166,11 @@ public class Filetransfer extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Filetransfer().setVisible(true);
-            }
-        });
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new Filetransfer().setVisible(true);
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

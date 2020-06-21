@@ -8,8 +8,6 @@ package Student;
 import connection.Client;
 import connection.ClientEvent;
 
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
@@ -49,7 +47,7 @@ public class Student extends javax.swing.JFrame {
             }
         });
 
-        new LoginFrm(this).setVisible(true);
+        new StudentLogin(this).setVisible(true);
 
     }
 

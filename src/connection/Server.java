@@ -30,7 +30,15 @@ public class Server {
 
     public void broadcastText(String text) throws IOException{
         for(Connection c:clients) {
+            if (c == null)  continue;
             c.sendText("教师", text);
+        }
+    }
+
+    public void broadcastFile(String path) throws IOException{
+        for(Connection c:clients) {
+            if (c == null)  continue;
+            c.sendFile(path);
         }
     }
 
@@ -179,6 +187,8 @@ public class Server {
                                 dataOutputStream.writeBoolean(res);
                                 dataOutputStream.flush();
                                 break;
+                            case MsgCode.ANSWER:
+                                    break;
                         }
                     }
                 } catch (Exception e) {
@@ -235,6 +245,11 @@ public class Server {
             @Override
             public void onReceiveFile(String filename) {
                 System.out.println("Received: "+ filename);
+            }
+
+            @Override
+            public void onReceiveAnswer(String sender, String answer) {
+
             }
 
             @Override

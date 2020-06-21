@@ -54,6 +54,11 @@ public class Teachchat extends javax.swing.JFrame {
             }
 
             @Override
+            public void onReceiveAnswer(String sender, String answer) {
+
+            }
+
+            @Override
             public boolean onLogin(String id, String name) {
                 if(sql.stuLogin(id,name)){
                     students.put(id, name);

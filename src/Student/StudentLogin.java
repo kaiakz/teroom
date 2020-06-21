@@ -11,19 +11,19 @@ import javax.swing.*;
  *
  * @author 123
  */
-public class LoginFrm extends javax.swing.JFrame {
+public class StudentLogin extends javax.swing.JFrame {
 
     /**
-     * Creates new form LoginFrm
+     * Creates new form StudentLogin
      */
     private Student parent;
 
-    public LoginFrm() {
+    public StudentLogin() {
         initComponents();
         setTitle("学生签到");
     }
 
-    public LoginFrm(Student parent) {
+    public StudentLogin(Student parent) {
         initComponents();
         setTitle("学生签到");
         setLocationRelativeTo(null);
@@ -145,13 +145,13 @@ public class LoginFrm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StudentLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StudentLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StudentLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StudentLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -159,7 +159,7 @@ public class LoginFrm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginFrm().setVisible(true);
+                new StudentLogin().setVisible(true);
             }
         });
     }
