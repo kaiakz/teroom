@@ -31,7 +31,7 @@ public class Student extends javax.swing.JFrame {
             public void onReceiveText(String sender, String text) {
                 Date time = new Date();
                 jTextArea1.append(sender+"\t"+time.toLocaleString()+"\n");
-                jTextArea1.append(text+"\n");
+                jTextArea1.append(text+"\n\n");
                 jTextArea1.setCaretPosition(jTextArea1.getText().length());
             }
 
@@ -43,12 +43,7 @@ public class Student extends javax.swing.JFrame {
 
             @Override
             public void onReceivedQuiz(String quiz) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        new Answer(c,quiz).setVisible(true);
-                    }
-                }).start();
+                new Answer(c,quiz).setVisible(true);
             }
         });
 
