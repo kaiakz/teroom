@@ -59,7 +59,7 @@ public class Student extends javax.swing.JFrame {
     public void setStudent(String name, String id) {
         this.name = name;
         this.id = id;
-        jTextArea1.append("*****"+name+"上线了*****\n");
+        jTextArea1.append("*****已进入电子教室*****\n");
     }
 
     /**
@@ -156,7 +156,12 @@ public class Student extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new ClientFileTransfer(c).setVisible(true);
+            }
+        }).start();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
