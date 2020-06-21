@@ -42,6 +42,13 @@ public class Server {
         }
     }
 
+    public void broadcastQuiz(String quiz) throws IOException {
+        for(Connection c:clients) {
+            if (c == null)  continue;
+            c.sendQuiz(quiz);
+        }
+    }
+
 
     class Listener implements Runnable {
         @Override
@@ -188,7 +195,9 @@ public class Server {
                                 dataOutputStream.flush();
                                 break;
                             case MsgCode.ANSWER:
-                                    break;
+                                String answer = dataInputStream.readUTF();
+                                serverEvent.onReceiveAnswer(stuid, name, answer);
+                                break;
                         }
                     }
                 } catch (Exception e) {
@@ -248,7 +257,7 @@ public class Server {
             }
 
             @Override
-            public void onReceiveAnswer(String sender, String answer) {
+            public void onReceiveAnswer(String id, String name, String answer) {
 
             }
 

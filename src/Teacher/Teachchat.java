@@ -54,9 +54,10 @@ public class Teachchat extends javax.swing.JFrame {
             }
 
             @Override
-            public void onReceiveAnswer(String sender, String answer) {
+            public void onReceiveAnswer(String id, String name, String answer) {
 
             }
+
 
             @Override
             public boolean onLogin(String id, String name) {

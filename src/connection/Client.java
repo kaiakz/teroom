@@ -91,6 +91,13 @@ public class Client {
         fos.close();
     }
 
+    public void sendAnswer(String answer) throws IOException {
+        dataOutputStream.writeInt(MsgCode.ANSWER);
+        dataOutputStream.flush();
+        dataOutputStream.writeUTF(answer);
+        dataOutputStream.flush();
+    }
+
     public boolean Login(String name, String id) throws IOException {
         dataOutputStream.writeInt(MsgCode.LOGIN);
         dataOutputStream.flush();
@@ -127,10 +134,14 @@ public class Client {
                             String quiz = dataInputStream.readUTF();
                             clientEvent.onReceivedQuiz(quiz);
                             break;
+                        case MsgCode.SCREEN:
+                            break;
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println("教师端已断开连接");
+                System.exit(-1);
             }
         }
 
