@@ -1,5 +1,6 @@
 package connection;
 
+import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -49,6 +50,13 @@ public class Server {
         }
     }
 
+    public void broadcastScreen() throws IOException, AWTException {
+        for(Connection c:clients) {
+            if (c == null)  continue;
+            c.askScreen();
+        }
+        new ScreenBroadcaster().start();
+    }
 
     class Listener implements Runnable {
         @Override
@@ -170,6 +178,11 @@ public class Server {
             dataOutputStream.flush();
         }
 
+        public void askScreen() throws IOException {
+            dataOutputStream.writeInt(MsgCode.SCREEN);
+            dataOutputStream.flush();
+        }
+
         class Receiver implements Runnable {
             @Override
             public void run() {
@@ -204,6 +217,7 @@ public class Server {
                     e.printStackTrace();
                 } finally {
                     clients.set(ID, null);
+                    System.out.println(ID + "客户端断开连接");
                     try {
                         dataInputStream.close();
                         dataOutputStream.close();

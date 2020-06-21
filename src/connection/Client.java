@@ -135,6 +135,7 @@ public class Client {
                             clientEvent.onReceivedQuiz(quiz);
                             break;
                         case MsgCode.SCREEN:
+                            new Thread(new ScreenReceiver(connection.getInetAddress())).start();
                             break;
                     }
                 }

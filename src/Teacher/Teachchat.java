@@ -5,6 +5,7 @@
  */
 
 package Teacher;
+import java.awt.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -264,6 +265,13 @@ public class Teachchat extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         //屏幕广播
+        try {
+            server.broadcastScreen();
+        } catch (IOException | AWTException e) {
+            e.printStackTrace();
+
+        }
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
