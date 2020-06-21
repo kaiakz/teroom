@@ -4,20 +4,26 @@
  * and open the template in the editor.
  */
 package Teacher;
+import javax.swing.*;
+import connection.Server;
+
+import java.io.IOException;
 
 /**
  *
  * @author 123
  */
 public class SendQuestion extends javax.swing.JFrame {
-
+    String question = "";
+    Server server;
     /**
      * Creates new form Question
      */
-    public SendQuestion() {
+    public SendQuestion(Server server) {
         initComponents();
         setTitle("答题卡");
         setLocationRelativeTo(null);
+        this.server = server;
     }
 
     /**
@@ -81,6 +87,20 @@ public class SendQuestion extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        //发送按钮
+        String question = jTextArea1.getText();
+        if(question.equals(""))
+            JOptionPane.showMessageDialog(this, "请输入问题", "发送失败", JOptionPane.INFORMATION_MESSAGE);//弹出警告框
+        else{
+            try{
+                this.server.broadcastQuiz(question);
+            }catch(IOException ex){
+                JOptionPane.showMessageDialog(this, "发送失败", "发送失败", JOptionPane.INFORMATION_MESSAGE);//弹出警告框
+            }
+//            new StopQuestion(this.server).setVisible(true);
+            this.dispose();
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -112,11 +132,11 @@ public class SendQuestion extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SendQuestion().setVisible(true);
-            }
-        });
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new SendQuestion().setVisible(true);
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

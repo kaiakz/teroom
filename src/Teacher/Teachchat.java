@@ -7,6 +7,7 @@
 package Teacher;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import connection.*;
@@ -56,7 +57,7 @@ public class Teachchat extends javax.swing.JFrame {
 
             @Override
             public void onReceiveAnswer(String id, String name, String answer) {
-
+                answers.add(new String[]{id, name, answer});
             }
 
 
@@ -246,8 +247,18 @@ public class Teachchat extends javax.swing.JFrame {
         }                                        
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private ArrayList<String[]> answers = new ArrayList<>();
+
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new SendQuestion(server).setVisible(true);
+                answers.clear();
+                new StopQuestion(answers).setVisible(true);
+            }
+        }).start();
         //开启答题
     }//GEN-LAST:event_jButton4ActionPerformed
 

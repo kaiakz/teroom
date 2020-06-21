@@ -34,7 +34,7 @@ public class ScreenBroadcaster extends Thread {
             try {
                 ImageIO.write(screenshot, "jpg", byteArrayOutputStream);
                 byte[] img = byteArrayOutputStream.toByteArray();
-                System.out.println("Try sending" + byteArrayOutputStream.size());
+                System.out.println("Try sending " + byteArrayOutputStream.size());
                 for (DataOutputStream out : channels) {
                     try {
                         out.writeInt(img.length);
@@ -57,7 +57,7 @@ public class ScreenBroadcaster extends Thread {
             @Override
             public void run() {
                 try {
-                    ServerSocket server = new ServerSocket(8925);
+                    ServerSocket server = new ServerSocket(8930);
                     while (true) {
                         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(server.accept().getOutputStream()));
                         channels.add(dataOutputStream);

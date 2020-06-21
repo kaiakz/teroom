@@ -15,13 +15,13 @@ public class ScreenReceiver extends JFrame implements Runnable {
     DataInputStream dataInputStream;
 
     ScreenReceiver(String host) throws IOException {
-        socket = new Socket(host, 8925);
+        socket = new Socket(host, 8930);
         dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         InitFrame();
     }
 
     ScreenReceiver(InetAddress host) throws IOException {
-        socket = new Socket(host, 8925);
+        socket = new Socket(host, 8930);
         dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         InitFrame();
     }
