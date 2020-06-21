@@ -10,6 +10,8 @@ package Teacher;
 import sqlite.Sqlservice;
 import sqlite.mes;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.util.Vector;
 
 /**
@@ -17,6 +19,13 @@ import java.util.Vector;
  * @author LinBun
  */
 public class Chathistory extends javax.swing.JFrame {
+
+//    @Override
+//    protected void processWindowEvent(WindowEvent e){
+//        if(e.getID() == WindowEvent.WINDOW_CLOSING){
+//            setDefaultCloseOperation(2);
+//        }
+//    }
 
     /**
      * Creates new form Chathistory
@@ -35,7 +44,19 @@ public class Chathistory extends javax.swing.JFrame {
             jTextArea1.append(rs1.elementAt(i).getT1().toString()+" "+rs1.elementAt(i).getT3().toString()+":\n"+rs1.elementAt(i).getT2().toString()+"\n");
         }
 
-
+//        java.awt.event.ActionListener al=new java.awt.event.ActionListener(){
+//
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String cmd = e.getActionCommand();
+//                if(e.getID() == WindowEvent.WINDOW_CLOSING){
+//                    System.out.println(e.getID());
+//                    setDefaultCloseOperation(2);
+//                }
+//            }
+//
+//
+//        };
 
     }
     /**
@@ -128,6 +149,8 @@ public class Chathistory extends javax.swing.JFrame {
             }
         });
     }
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
