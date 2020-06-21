@@ -5,22 +5,31 @@
  */
 package Student;
 
+import connection.Client;
+
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  *
  * @author 123
  */
 public class Answer extends javax.swing.JFrame {
-
+    Client c;
+    String q;
     /**
      * Creates new form Answer
      */
     public Answer() {
         initComponents();
+    }
+    public Answer(Client c,String q) {
+        initComponents();
         setTitle("回答问题");
         setLocationRelativeTo(null);
-        StringBuffer s=new StringBuffer("问题字符串");
+        this.c=c;
+        this.q=q;
+        StringBuffer s=new StringBuffer(q);
         int width=jLabel1.getWidth();
         for(int i=0,j=0;i<s.length();++i){
             ++j;
@@ -93,7 +102,13 @@ public class Answer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            c.sendAnswer(q);
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "发送失败，没有等待回答的问题");
+        }
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

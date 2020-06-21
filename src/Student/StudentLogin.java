@@ -20,7 +20,6 @@ public class StudentLogin extends javax.swing.JFrame {
 
     public StudentLogin() {
         initComponents();
-        setTitle("学生签到");
     }
 
     public StudentLogin(Student parent) {
