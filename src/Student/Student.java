@@ -37,7 +37,7 @@ public class Student extends javax.swing.JFrame {
 
             @Override
             public void onReceiveFile(String sender, String filename) {
-                jTextArea1.append(sender+"发送了文件"+filename+"\n\n");
+                jTextArea1.append(sender+"发送了一个文件，已经保存至"+filename+"\n\n");
                 jTextArea1.setCaretPosition(jTextArea1.getText().length());
             }
 
@@ -48,7 +48,7 @@ public class Student extends javax.swing.JFrame {
                     public void run() {
                         new Answer(c,quiz).setVisible(true);
                     }
-                });
+                }).start();
             }
         });
 
