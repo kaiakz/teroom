@@ -51,7 +51,7 @@ public class Teachchat extends javax.swing.JFrame {
             }
 
             @Override
-            public void onReceiveFile(String filename) {
+            public void onReceiveFile(String name, String filename) {
 
             }
 
@@ -67,6 +67,11 @@ public class Teachchat extends javax.swing.JFrame {
                     students.put(id, name);
                     return true;    // Auth
                 }else return false;
+            }
+
+            @Override
+            public void onQuit(String id, String name) {
+
             }
         });
     }
