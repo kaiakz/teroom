@@ -13,6 +13,8 @@ public class Client {
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
 
+    private ScreenReceiver screenReceiver = null;
+
     public Client(ClientEvent clientEvent) {
         this.clientEvent = clientEvent;
 
@@ -135,7 +137,12 @@ public class Client {
                             clientEvent.onReceivedQuiz(quiz);
                             break;
                         case MsgCode.SCREEN:
-                            new Thread(new ScreenReceiver(connection.getInetAddress())).start();
+                            if (screenReceiver == null) {
+                                screenReceiver = new ScreenReceiver(connection.getInetAddress());
+                                new Thread(screenReceiver).start();
+                            } else {
+                                screenReceiver.reverseFrame();
+                            }
                             break;
                     }
                 }

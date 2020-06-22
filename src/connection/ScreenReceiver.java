@@ -28,6 +28,10 @@ public class ScreenReceiver extends JFrame implements Runnable {
 
     private JLabel jLabel;
 
+    public void reverseFrame() {
+        this.setVisible(!this.isVisible());
+    }
+
     @Override
     protected void processWindowEvent(WindowEvent e){
         if(e.getID() == WindowEvent.WINDOW_CLOSING){
@@ -78,6 +82,11 @@ public class ScreenReceiver extends JFrame implements Runnable {
                 e.printStackTrace();
                 break;
             }
+        }
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         dispose();
     }

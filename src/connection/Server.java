@@ -9,6 +9,7 @@ public class Server {
     ArrayList<Connection> clients;
     ServerEvent serverEvent;   // Client Event
 
+    ScreenBroadcaster screenBroadcaster = null;
 
     public Server(ServerEvent serverEvent) {
         this.serverEvent = serverEvent;
@@ -20,7 +21,8 @@ public class Server {
 
     public void RelayText(int sender, String name, String text) throws IOException{
         for (int i = 0; i < clients.size(); i++) {
-            if (i == sender || clients.get(i) == null)    continue;
+            Connection c = clients.get(i);
+            if (i == sender || c == null || !c.isLogin())    continue;
             String tmp = name;
             if (tmp == null) {
                 tmp = "Student" + i;
@@ -31,31 +33,34 @@ public class Server {
 
     public void broadcastText(String text) throws IOException{
         for(Connection c:clients) {
-            if (c == null)  continue;
+            if (c == null || !c.isLogin())  continue;
             c.sendText("教师", text);
         }
     }
 
     public void broadcastFile(String path) throws IOException{
         for(Connection c:clients) {
-            if (c == null)  continue;
+            if (c == null || !c.isLogin())  continue;
             c.sendFile(path);
         }
     }
 
     public void broadcastQuiz(String quiz) throws IOException {
         for(Connection c:clients) {
-            if (c == null)  continue;
+            if (c == null || !c.isLogin())  continue;
             c.sendQuiz(quiz);
         }
     }
 
     public void broadcastScreen() throws IOException, AWTException {
         for(Connection c:clients) {
-            if (c == null)  continue;
+            if (c == null || !c.isLogin())  continue;
             c.askScreen();
         }
-        new ScreenBroadcaster().start();
+        if (screenBroadcaster == null) {
+            screenBroadcaster = new ScreenBroadcaster();
+            screenBroadcaster.start();
+        }
     }
 
     class Listener implements Runnable {
@@ -110,6 +115,12 @@ public class Server {
 
         private String name = "STUDENT";
         private String stuid;
+
+        private boolean login = false;
+
+        public boolean isLogin() {
+            return login;
+        }
 
         private DataOutputStream dataOutputStream;
         private DataInputStream dataInputStream;
@@ -198,7 +209,7 @@ public class Server {
                                 break;
                             case MsgCode.FILE:
                                 String fname = getFile();
-                                serverEvent.onReceiveFile(fname);
+                                serverEvent.onReceiveFile(name, fname);
                                 break;
                             case MsgCode.LOGIN:
                                 name = dataInputStream.readUTF();
@@ -206,6 +217,7 @@ public class Server {
                                 boolean res = serverEvent.onLogin(stuid, name);
                                 dataOutputStream.writeBoolean(res);
                                 dataOutputStream.flush();
+                                login = res;
                                 break;
                             case MsgCode.ANSWER:
                                 String answer = dataInputStream.readUTF();
@@ -218,6 +230,7 @@ public class Server {
                 } finally {
                     clients.set(ID, null);
                     System.out.println(ID + "客户端断开连接");
+                    serverEvent.onQuit(stuid, name);
                     try {
                         dataInputStream.close();
                         dataOutputStream.close();
@@ -266,8 +279,8 @@ public class Server {
             }
 
             @Override
-            public void onReceiveFile(String filename) {
-                System.out.println("Received: "+ filename);
+            public void onReceiveFile(String name, String filename) {
+                System.out.println("Received: "+ name + filename);
             }
 
             @Override
@@ -279,6 +292,11 @@ public class Server {
             public boolean onLogin(String id, String name) {
                 System.out.println("Login" + id + name);
                 return true;
+            }
+
+            @Override
+            public void onQuit(String id, String name) {
+
             }
 
 
