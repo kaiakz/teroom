@@ -34,7 +34,6 @@ public class ScreenBroadcaster extends Thread {
             try {
                 ImageIO.write(screenshot, "jpg", byteArrayOutputStream);
                 byte[] img = byteArrayOutputStream.toByteArray();
-                System.out.println("Try sending " + byteArrayOutputStream.size());
                 for (DataOutputStream out : channels) {
                     try {
                         out.writeInt(img.length);

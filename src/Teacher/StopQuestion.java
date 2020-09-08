@@ -6,6 +6,7 @@
 package Teacher;
 import sqlite.*;
 
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Vector;
@@ -15,33 +16,31 @@ import javax.swing.table.DefaultTableModel;
  * @author 123
  */
 public class StopQuestion extends javax.swing.JFrame {
-    ArrayList<String[]> answers;
-    Sqlservice sql;
+    ArrayList<String[]> answers = new ArrayList<String[]>();
+
+    @Override
+    protected void processWindowEvent(WindowEvent e){
+        if(e.getID() == WindowEvent.WINDOW_CLOSING){
+            dispose();
+        }
+    }
+
     /**
      * Creates new form StopQuestion
      */
-    public StopQuestion(ArrayList<String[]> answers) {
+    public StopQuestion() {
+        Sqlservice sql = new Sqlservice();
+        sql.clearAnswer();
         initComponents();
         setTitle("回答统计");
         setLocationRelativeTo(null);
-        this.answers = answers;
         /*
         接收问卷并存入数据库，每接收一次就刷新一次表格
         */
     }
     public void initTable(){
         DefaultTableModel dtm=(DefaultTableModel)jTable1.getModel();
-        try {
-            Vector<sqlite.mess> v1 = sql.getUser();
-            for(int i = 0; i < v1.size(); i++){
-                Vector v=new Vector();
-                v.add(v1.elementAt(i).getT1());
-                v.add(v1.elementAt(i).getT2());
-                v.add(v1.elementAt(i).getT3());
-                dtm.addRow(v);
-            }
-        } catch (Exception ex) {
-        }
+
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,7 +58,7 @@ public class StopQuestion extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButton1.setFont(new java.awt.Font("黑体", 0, 18)); // NOI18N
-        jButton1.setText("结束答题");
+        jButton1.setText("刷新");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -70,7 +69,7 @@ public class StopQuestion extends javax.swing.JFrame {
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
-            },
+           },
             new String [] {
                 "学号", "姓名", "回答"
             }
@@ -110,11 +109,21 @@ public class StopQuestion extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        //结束按钮
+        //刷新
         /*
         停止接收或接收无效学生之后发来的回答
         */
         DefaultTableModel dtm=(DefaultTableModel)jTable1.getModel();
+        int j = jTable1.getRowCount();
+        for(int i = 0; i < j;i++){
+            dtm.removeRow(i);
+        }
+        answers.clear();
+        Sqlservice sql = new Sqlservice();
+        Vector<sqlite.mes> v2 = sql.getAnswer();
+        for(int i = 0; i < v2.size(); i++){
+            this.answers.add(new String[]{v2.elementAt(i).getT1().toString(),v2.elementAt(i).getT2().toString(),v2.elementAt(i).getT3().toString()});
+        }
         for (String[] r : answers) {
             dtm.addRow(r);
         }

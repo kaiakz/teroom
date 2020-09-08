@@ -34,13 +34,12 @@ public class Teachchat extends javax.swing.JFrame {
     public Teachchat(String id) {
         initComponents();
         Sqlservice sql = new Sqlservice();
-        sql.refleshLogin();
+        sql.clearLogin();
         this.setTitle("教师主界面");//设定标题
         this.setLocationRelativeTo(null);
         this.id = id;
         jLabel2.setText(id);
 
-        students = new HashMap<>();
 
         server = new Server(new ServerEvent() {
             @Override
@@ -51,20 +50,20 @@ public class Teachchat extends javax.swing.JFrame {
             }
 
             @Override
-            public void onReceiveFile(String name, String filename) {
-
+            public void onReceiveFile(String sender,String filename) {
+                jTextArea1.append(sender+"发送了一个文件，已经保存至"+filename+"\n\n");
+                jTextArea1.setCaretPosition(jTextArea1.getText().length());
             }
 
             @Override
             public void onReceiveAnswer(String id, String name, String answer) {
-                answers.add(new String[]{id, name, answer});
+                sql.setAnswer(id,name,answer);
             }
 
 
             @Override
             public boolean onLogin(String id, String name) {
                 if(sql.stuLogin(id,name)){
-                    students.put(id, name);
                     return true;    // Auth
                 }else return false;
             }
@@ -252,16 +251,15 @@ public class Teachchat extends javax.swing.JFrame {
         }                                        
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private ArrayList<String[]> answers = new ArrayList<>();
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        Sqlservice sql = new Sqlservice();
+        sql.clearAnswer();
         new Thread(new Runnable() {
             @Override
             public void run() {
+                new StopQuestion().setVisible(true);
                 new SendQuestion(server).setVisible(true);
-                answers.clear();
-                new StopQuestion(answers).setVisible(true);
             }
         }).start();
         //开启答题
@@ -273,7 +271,7 @@ public class Teachchat extends javax.swing.JFrame {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new Sign(students).setVisible(true);
+                new Sign().setVisible(true);
             }
         }).start();
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -285,7 +283,6 @@ public class Teachchat extends javax.swing.JFrame {
             server.broadcastScreen();
         } catch (IOException | AWTException e) {
             e.printStackTrace();
-
         }
 
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -336,6 +333,8 @@ public class Teachchat extends javax.swing.JFrame {
         });
     }
 
+    // Variables declaration - do not modify
+//    private ArrayList<String[]> answers = new ArrayList<>();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

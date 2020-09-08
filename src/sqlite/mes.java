@@ -19,6 +19,4 @@ public class mes<a, b, c> {
     public c getT3(){
         return t3;
     }
-    //此为泛型类 可用于填装聊天记录、签到时间
-    //统一格式为 姓名、聊天消息、发送时间 或 ID、姓名、签到时间
 }

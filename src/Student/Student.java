@@ -31,13 +31,13 @@ public class Student extends javax.swing.JFrame {
             public void onReceiveText(String sender, String text) {
                 Date time = new Date();
                 jTextArea1.append(sender+"\t"+time.toLocaleString()+"\n");
-                jTextArea1.append(text+"\n\n");
+                jTextArea1.append(text+"\n");
                 jTextArea1.setCaretPosition(jTextArea1.getText().length());
             }
 
             @Override
             public void onReceiveFile(String sender, String filename) {
-                jTextArea1.append(sender+"发送了一个文件，已经保存至"+filename+"\n\n");
+                jTextArea1.append(sender+"发送了一个文件，已经保存至"+filename+"\n");
                 jTextArea1.setCaretPosition(jTextArea1.getText().length());
             }
 

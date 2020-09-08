@@ -6,8 +6,12 @@
 package Teacher;
 import javax.swing.*;
 import connection.Server;
+import sqlite.Sqlservice;
+import sqlite.mes;
 
+import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.Vector;
 
 /**
  *
@@ -19,6 +23,19 @@ public class SendQuestion extends javax.swing.JFrame {
     /**
      * Creates new form Question
      */
+    protected void processWindowEvent(WindowEvent e){
+        if(e.getID() == WindowEvent.WINDOW_CLOSING){
+            dispose();
+        }
+    }
+
+    public Vector<mes> rt(){
+        Sqlservice sql = new Sqlservice();
+        sql.setQuestion(question);
+        Vector<mes> rs = sql.getAnswer();
+        return rs;
+    }
+
     public SendQuestion(Server server) {
         initComponents();
         setTitle("答题卡");

@@ -5,10 +5,13 @@
  */
 
 package Teacher;
+import sqlite.*;
+
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 /**
  *
@@ -26,13 +29,10 @@ public class Sign extends javax.swing.JFrame {
     /**
      * Creates new form Sign
      */
-    HashMap<String, String> students;
 
-    public Sign(HashMap<String, String> stu) {
+
+    public Sign() {
         initComponents();
-
-        students = stu;
-
         this.setTitle("签到情况");//设定标题
         this.setLocationRelativeTo(null);
         //this.sql = new Sqlserver();
@@ -48,8 +48,10 @@ public class Sign extends javax.swing.JFrame {
             接收到学生的签到信息写入数据库
             在这里从数据库里取出来
            */
-            for (Map.Entry<String, String> entry : students.entrySet()) {
-                dtm.addRow(new Object[]{entry.getKey(), entry.getValue()});
+            Sqlservice sql = new Sqlservice();
+            Vector<me2> v1 = sql.getLogin();
+            for (int i = 0; i < v1.size(); i++) {
+                dtm.addRow(new Object[]{v1.elementAt(i).getT1(), v1.elementAt(i).getT2()});
             }
         } catch (Exception ex) {
         }
